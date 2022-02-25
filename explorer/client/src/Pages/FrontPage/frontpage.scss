@@ -1,0 +1,33 @@
+.searchBar {
+  width: 80%;
+  height: 10%;
+  border: 1px solid rgb(231, 236, 247);
+  padding: 3px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  margin-left: 7px;
+  margin-right: 9px;
+}
+
+.material-icons.search {
+  font-size: 30px;
+  padding-top: 1px;
+  color: #2081e2cf;
+  cursor: pointer;
+}
+
+.searchBlock {
+  border: none;
+  font-size: 18px;
+  width: 80%;
+  height: 24px;
+  color: inherit;
+}
+.searchBlock:focus,
+.searchBlock:hover {
+  outline: none;
+}
