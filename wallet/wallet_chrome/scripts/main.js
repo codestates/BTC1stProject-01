@@ -43,14 +43,16 @@ const createAccount = async () => {
             });
 
             // 계정 정보 갱신
-            let accountList = '';
-            for(let i=0;i<result.account.length;i++) {
-              console.log(result.account[i].addressForONE);
-              accountList += `${result.account[i].addressForONE}\r\n`;
-            }
-            document.getElementById('account-stored').innerText= accountList;
+            // let accountList = '';
+            // for(let i=0;i<result.account.length;i++) {
+            //   console.log(result.account[i].addressForONE);
+            //   accountList += `${result.account[i].addressForONE}\r\n`;
+            // }
+            //document.getElementById('account-stored').innerText= accountList;
             alert(`${hdNumber + 1} 번째 계정이 생성되었습니다.\r\n지갑주소: ${response.data.data.addressForONE}`);
-            refreshPage();
+            chrome.storage.sync.set({'accountSelected':response.data.data.addressForONE},function() {
+              refreshPage();
+            });
           })
           .catch(error=>{
             console.log(error)
@@ -95,12 +97,6 @@ document.getElementById('new-account').onclick = async function () {
 document.getElementById('button-logout').onclick = async function () {
   chrome.storage.sync.set({'password':null});
   window.location.href="/popup.html";
-}
-
-//클릭 이벤트 처리
-document.getElementById("element").style.display = "none";
-document.getElementById("start").onclick = function () {
-  document.getElementById("element").style.display = "block";
 }
 
 
@@ -173,7 +169,7 @@ chrome.storage.local.get('account', function(result) {
     createAccount();
   } else {
     console.log('계정 리스트');
-    let accountList = '';
+    //let accountList = '';
 
     chrome.storage.sync.get('accountSelected', function(selected) { 
       for(let i=0;i<result.account.length;i++) {
@@ -188,7 +184,6 @@ chrome.storage.local.get('account', function(result) {
 
         //계정 스위칭
         div.addEventListener('click', function(){
-          alert(this.name);
           chrome.storage.sync.set({'accountSelected':this.name},function() {
             refreshPage();
           });
@@ -210,9 +205,9 @@ chrome.storage.local.get('account', function(result) {
         }
         document.getElementById('menu-account-list').appendChild(div);
         
-        accountList += `${myFullAddress}\r\n`;
+        //accountList += `${myFullAddress}\r\n`;
       }
-      document.getElementById('account-stored').innerText= accountList;
+      //document.getElementById('account-stored').innerText= accountList;
     });
     
 
@@ -232,6 +227,34 @@ chrome.storage.local.get('account', function(result) {
   }
 });
 
+
+//개인키 확인을 위한 인증
+document.getElementById('button-password').onclick = async function () {
+  let pwd = document.getElementById("pwd-login").value;
+  chrome.storage.local.get('password', function(result) {
+    //입력받은 암호를 SHA256 로 해싱한 값과, 암호화된 개인키를 서버에 보낸다
+    let encPrivateKey = result.password;
+
+    //잠자자.
+    //만약 패스워드가 일치하면, 해당 계정의 암호화된 개인키를 get('account') 후 for 문
+    //암호 & 암호화된 개인키를 서버에 요청하는 로직부터ㅋ
+    //그리고 서버에서 받아서 복호화한다음 결과값을 화면에 뿌려야 한다
+    //별도 화면 step을 만들자 (거기서 확인 버튼 누르면 page refresh)
+    if(SHA256(pwd) == encPwd) {
+      //브라우저에 임시 저장
+      chrome.storage.sync.set({'password': pwd}, function(result) {
+        //저장된 패스워드 확인
+        chrome.storage.sync.get('password', function(result) {
+          document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+          window.location.href = "/pages/main.html";
+        });
+      });
+    } else {
+      alert('패스워드가 일치하지 않습니다');
+    }
+
+  })
+}
 
 
 //저장된 패스워드 확인

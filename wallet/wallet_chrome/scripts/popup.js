@@ -51,7 +51,6 @@ document.getElementById('button-step-3').onclick = async function () {
   let pwd1 = document.getElementById("pwd1-step-3").value;
   let pwd2 = document.getElementById("pwd2-step-3").value;
   if(pwd1 == pwd2 && pwd1.length > 0) {
-    alert('패스워드 생성');
     let encPwd = SHA256(pwd1);
     console.log(encPwd);
 
@@ -80,8 +79,6 @@ document.getElementById('createMnemonic').onclick = async function () {
   try {
     chrome.storage.sync.get('password', function(result) {
       const PWD = result.password;
-      alert(`니모닉 암호화에 사용할 패스워드 : ${PWD}`);
-    
 
       //니모닉 코드 발급
       axios({
@@ -103,12 +100,10 @@ document.getElementById('createMnemonic').onclick = async function () {
       .catch(error=>{
           console.log('에러');
           console.log(error)
-          alert(error)
       })
     });
   } catch (e) {
     console.log(e);
-    alert(e);
   }
 }
 
@@ -165,7 +160,6 @@ chrome.storage.local.get('mnemonic', function(result) {
   //저장된 니모닉이 없다면
   if(!result.mnemonic) {
     //시작하기 화면
-    //alert('니모닉이 존재하지 않습니다');
     hideDiv("logo");
     showDiv("start-step-1");
   } else {    

@@ -43,7 +43,7 @@
       </div>
     </center>
 
-    <div style="margin:1em;word-wrap:break-word;">
+    <div id="step-main" style="margin:1em;word-wrap:break-word;">
     <div>
       <center>
         <img style="width:3em" src="/images/harmony-one-logo.png" />
@@ -57,18 +57,31 @@
         <div style="margin-bottom:6em;word-wrap:break-word;">
           <h5 id="account-list" style="background-color: #DDD"></h5>
         </div>
-        <div style="margin-bottom:6em;word-wrap:break-word;">
-          <p id="account-stored"></p>
-        </div>
         <div style="margin-bottom:2em">
-          <button class="btn btn-danger" id ="start">테스트 버튼</button>
-          
-          <div id ="element">테스트3</div>
+          <button class="btn btn-primary" id ="button-transfer">보내기</button>
         </div>
       </center>
     </div>
     </div>
 
+    <!-- 스텝. 개인키 확인을 위한 비밀번호 입력 -->
+    <div id="step-password">
+      <!-- <img style="width:100%" src="/images/banner.jpeg" /> -->
+      <center style="margin:1em 1em;padding:1em 0.4em">
+        <h4>암호를 입력하세요</h4>
+        <p style="margin-top:1em">개인키 정보를 복호화하기 위해서는 당신의 암호가 필요합니다</p>
+        <p style="text-align:left;font-size:0.9em;margin-top:4em;margin-bottom:-0.1em">암호</p>
+        <input style="width:100%" type="password" id="pwd-login" autofocus />
+        <div style="margin:3em 0em 1.6em 0em">
+          <button style="width:80%" class="btn-lg btn-primary" id="button-password">확인</button>
+        </div>
+      </center>
+    </div>
+
+
+    <!-- <div style="margin-bottom:6em;word-wrap:break-word;">
+      <p id="account-stored"></p>
+    </div> -->
     <div style="margin-bottom:6em;word-wrap:break-word;">
       <h5 id="mnemonic-stored"></h5>
     </div>
