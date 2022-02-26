@@ -6,28 +6,109 @@
 
 
   </head>
-  <body style="width:20em;height:30em">
-    <div style="margin-bottom:2em">
+  <body style="width:20em;height:34em">
+    <div id="logo" style="margin-top:0.4em;margin-left:0.4em;margin-bottom:2em">
       <a href="./popup.html">
-        <img src="./images/32.png" />
+        <img src="./images/n48.png" />
       </a>
     </div>
-    <div>
-      <center>
+
+    <div id="start-step-temp">
+      <center style="margin:1em;padding:1em 0.4em">
         <div style="margin-bottom:2em">
           <a href="./pages/main.html"><button class="btn btn-primary" id="changeColor">로그인</button></a>
         </div>
-        <div>
+        <div style="margin-bottom:2em">
           <button class="btn btn-primary" id="createMnemonic">니모닉 계정 생성</button>
         </div>
+        <div style="height:4em;margin-bottom:6em;">
+          <h5 id="mnemonic-data" style="background-color: #DDD"></h5>
+        </div>
       </center>
+    </div>
+
+    <!-- 스텝1. 시작하기 화면 -->
+    <div id="start-step-1">
+      <img style="width:100%" src="/images/banner.jpeg" />
+      <center style="margin:0em 1em;padding:1em 0.4em">
+        <p style="margin-top:1em">하모니(harmony, ONE) 지갑을 관리합니다.</p>
+        <div style="margin:3em 0em">
+          <button class="btn-lg btn-primary" id="button-step-1">시작하기</button>
+        </div>
+      </center>
+    </div>
+
+    <!-- 스텝2. 처음이세요? 화면 -->
+    <div id="start-step-2">
+      <div style="height:10em;margin:1em;padding:1em 0.4em">
+        <center>
+          <h5 style="margin-top:2em">하모니에 처음이세요?</h5>
+        </center>
+        <div>
+          <div style="width:50%;float:left;">
+            <center>
+              <p style="margin-top:1em">아니요, 비밀 복구 구문이 있습니다</p>
+            </center>
+          </div>
+          <div style="width:50%;float:left;">
+            <center>
+              <p style="margin-top:1em">니모닉 코드 생성</p>
+            </center>
+          </div>
+        </div>
+      </div>
+      <div style="height:6em;">
+        <div>
+          <div style="width:50%;float:left;">
+            <center>
+            <div style="margin:1em 0em">
+              <button class="btn btn-warning" id="button-step-2-1">지갑 가져오기</button>
+            </div>
+            </center>
+          </div>
+          <div style="width:50%;float:left;">
+            <center>
+            <div style="margin:1em 0em">
+              <button class="btn btn-primary" id="button-step-2-2">지갑 생성</button>
+            </div>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 스텝3. 암호 생성 화면 -->
+    <div id="start-step-3">
+      <div style="margin:1em;padding:1em 0.4em">
+        <center>
+          <h5 style="margin-top:2em">암호 생성</h5>
+        </center>
+        <p style="font-size:0.9em;margin-top:1em;margin-bottom:-0.1em">새 암호</p>
+        <input style="width:100%" type="password" id="pwd1-step-3"></input>
+        <p style="font-size:0.9em;margin-top:1em;margin-bottom:-0.1em">확인</p>
+        <input style="width:100%" type="password" id="pwd2-step-3"></input>
+        <div style="margin:3em 0em">
+          <center>
+          <button class="btn btn-primary" id="button-step-3">생성</button>
+          </center>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="height:4em;margin-bottom:6em">
+      <h5 id="mnemonic-stored"></h5>
+    </div>
+    <div style="height:4em;margin-bottom:6em">
+      <h5 id="password-stored"></h5>
     </div>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
- 
+
+    <script src="/scripts/SHA256.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="/scripts/popup.js"></script>
 
