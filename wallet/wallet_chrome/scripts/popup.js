@@ -16,26 +16,36 @@ const showDiv = (id) => {
 }
 
 
-//스텝에 따른 화면 분기
+//스텝에 따른 화면 분기 세팅
 hideDiv("start-step-1");
 hideDiv("start-step-2");
 hideDiv("start-step-3");
+hideDiv("start-step-4");
+hideDiv("start-step-5");
 hideDiv("start-step-temp");
 
-//버튼에 따른 화면 전개
+/*
+ * 버튼에 따른 화면 전개
+ */
+//시작하기 버튼
 document.getElementById('button-step-1').onclick = async function () {
   hideDiv("start-step-1");
   showDiv("logo");
   showDiv("start-step-2");
 }
+
+//니모닉을 통한 복구 버튼
 document.getElementById('button-step-2-1').onclick = async function () {
   alert('[TBD] 개발 중');
 }
+
+//니모닉 생성 버튼 -> 암호 생성
 document.getElementById('button-step-2-2').onclick = async function () {
   hideDiv("start-step-2");
   showDiv("start-step-3");
 }
 
+//패스워드 생성
 document.getElementById('button-step-3').onclick = async function () {
   let pwd1 = document.getElementById("pwd1-step-3").value;
   let pwd2 = document.getElementById("pwd2-step-3").value;
@@ -46,39 +56,58 @@ document.getElementById('button-step-3').onclick = async function () {
 
     //브라우저에 저장
     chrome.storage.local.set({'password': encPwd});
+    chrome.storage.sync.set({'password': pwd1}, function(result) {
+      //저장된 패스워드 확인
+      chrome.storage.sync.get('password', function(result) {
+        document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+      });
+    });
+
+    //패스워드를 새로 생성했으므로 니모닉, 계정 모두 초기화 (생성순서: 암호 -> 니모닉 -> 계정)
+    chrome.storage.local.set({'mnemonic': null});
+    chrome.storage.local.set({'account': null});
+
+    hideDiv("start-step-3");
+    showDiv("start-step-4");
   } else {
     alert('입력한 두 패스워드가 일치하지 않습니다');
   }
 }
 
-
+//스텝4 버튼(니모닉 생성)
 document.getElementById('createMnemonic').onclick = async function () {
-  alert('니모직 생성!');
-
   try {
-    const PWD = 'test';
+    chrome.storage.sync.get('password', function(result) {
+      const PWD = result.password;
+      alert(`니모닉 암호화에 사용할 패스워드 : ${PWD}`);
+    
 
-    //니모닉 코드 발급
-    axios({
-      method: 'GET', //통신 방식
-      url: `http://localhost:4000/api/mnemonic/${PWD}`, //통신할 페이지
-      data: {} //인자로 보낼 데이터
-    })
+      //니모닉 코드 발급
+      axios({
+        method: 'GET', //통신 방식
+        url: `http://localhost:4000/api/mnemonic/${PWD}`, //통신할 페이지
+        data: {} //인자로 보낼 데이터
+      })
       .then(response=>{
-          document.getElementById('mnemonic-data').innerText=response.data.data;
+          document.getElementById('mnemonic-data').innerText=response.data.data.mnemonic;
           
           // 브라우저에 니모닉 저장
-          chrome.storage.local.set({'mnemonic': response.data.data}, function() {
+          chrome.storage.local.set({'mnemonic': response.data.data.encData}, function() {
             console.log('Value is set to ' + value);
           });
+
+          hideDiv("start-step-4");
+          showDiv("start-step-5");
       })
       .catch(error=>{
           console.log('에러');
           console.log(error)
           alert(error)
       })
+    });
   } catch (e) {
     console.log(e);
+    alert(e);
   }
 }
 
@@ -93,14 +122,23 @@ chrome.storage.local.get('mnemonic', function(result) {
     hideDiv("logo");
     showDiv("start-step-1");
   } else {
-    alert('니모닉 존재');
-    alert(result.mnemonic);
+    alert('니모닉 존재 ' + result.mnemonic);
+    
+    //임시 테스트 (여기 로직은 '니모닉' 이 존재하는 경우. 즉 패스워드와 니모닉 모두 존재하는 경우 로그인)
+    //로그인 프로세스 넣어야됨
+    hideDiv("logo");
+    showDiv("start-step-1");
   }
 });
 
 //저장된 패스워드 확인
 chrome.storage.local.get('password', function(result) {
   document.getElementById('password-stored').innerText= '저장된 패스워드 ' + result.password;
+});
+
+//임시 패스워드 확인
+chrome.storage.sync.get('password', function(result) {
+  document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
 });
 
 //니모닉 키스토어 초기화
