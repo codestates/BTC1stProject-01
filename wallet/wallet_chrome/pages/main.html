@@ -6,6 +6,7 @@
 
 <!-- 합쳐지고 최소화된 최신 CSS
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
   <body style="width:20em;height:34em">
@@ -13,11 +14,41 @@
       <a href="/popup.html">
         <img src="/images/n48.png" />
       </a>
+      <button style="float:right;margin-left:0.6em;" class="btn-sm btn-info" id ="button-menu">메뉴</button>
+      <button style="float:right;" id ="button-logout" class="btn-sm btn-light">잠금</button>
     </div>
+
+    <!-- 메뉴 기능 -->
+    <center id="menu" style="position:absolute;width:100%;">
+      <div class="modal-dialog modal-dialog-centered">
+        <!-- <div style="height:30em;" class="modal-content"> -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button id="menu-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="word-wrap:break-word;" id="menu-account-list" class="modal-body">
+            <h5 style="text-align:left">내 계정 선택</h5>
+            <!-- <div style="margin-top:0.1em;width:100%" class="btn btn-light">oneuxa...qydd</div> -->
+          </div>
+          <div style="background-color:#eee" class="modal-body">
+            <h5 style="text-align:left">기능</h5>
+            <div id ="export-account" style="margin-top:0.1em;width:100%" class="btn btn-warning">비공개 키 내보내기</div>
+            <div id ="new-account" style="margin-top:0.1em;width:100%" class="btn btn-warning">계정 생성하기</div>
+            <div id ="import-account" style="margin-top:0.1em;width:100%" class="btn btn-warning">계정 가져오기</div>
+            <div style="margin-top:0.1em;width:100%" class="btn btn-warning">블록탐색기에서 계정 보기</div>
+          </div>
+        </div>
+      </div>
+    </center>
+
+    <div style="margin:1em;word-wrap:break-word;">
     <div>
       <center>
-        <h3><b>5.82</b> ONE</h3>
-        <p>지갑 주소</p>
+        <img style="width:3em" src="/images/harmony-one-logo.png" />
+        <h3 style="margin-top:1em" id="mainBalance">밸런스 확인 중..</h3>
+        <p style="font-size:0.8em" id="mainAddress">&nbsp;</p>
       </center>
     </div>
 
@@ -30,16 +61,13 @@
           <p id="account-stored"></p>
         </div>
         <div style="margin-bottom:2em">
-          <button class="btn btn-warning" id ="new-account">계정 생성</button>
           <button class="btn btn-danger" id ="start">테스트 버튼</button>
-          <button class="btn btn-danger" id ="button-logout">잠금</button>
+          
           <div id ="element">테스트3</div>
         </div>
       </center>
     </div>
-    
-
-
+    </div>
 
     <div style="margin-bottom:6em;word-wrap:break-word;">
       <h5 id="mnemonic-stored"></h5>
@@ -59,5 +87,8 @@
  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="/scripts/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
-const abiDecoder = require('abi-decoder'); // NodeJS
-const converter = require('bech32-converting');
+//const abiDecoder = require('abi-decoder'); // NodeJS
+//const converter = require('bech32-converting');
 // Example
 //converter('eth').toBech32('0x0E3f45Cbfda1C9Eb008Ebc9873F3DBA1d9A86E9D')
 // eth1pcl5tjla58y7kqywhjv88u7m58v6sm5afc6dwn
@@ -38,7 +38,7 @@ const {
   decryptPhrase
 } = require('@harmony-js/crypto');
 
-const shardURL = 'https://api.s0.b.hmny.io/'; //테스트
+const shardURL = 'https://api.s1.b.hmny.io/'; //테스트
 const hmy = new Harmony(
   shardURL,
   {
@@ -58,31 +58,31 @@ const test = async () => {
     let res = await hmy.blockchain.getBalance({address: publicKey});
     console.log('밸런스 in ONEs: ' + fromWei(hexToNumber(res.result), Units.one));
 
-    const request = require('request');
+    // const request = require('request');
 
-    let options = {
-        //url: shardURL + 'address/id=' + publicKey,
-        url: shardURL,
-        method: "post",
-        headers:
-        { 
-         "content-type": "application/json"
-        },
-        body: JSON.stringify({
-          "jsonrpc": "2.0",
-          "id": "1",
-          "method": "hmyv2_getBalance",
-          "params": [publicKey]
-        })
-    };
+    // let options = {
+    //     //url: shardURL + 'address/id=' + publicKey,
+    //     url: shardURL,
+    //     method: "post",
+    //     headers:
+    //     { 
+    //      "content-type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //       "jsonrpc": "2.0",
+    //       "id": "1",
+    //       "method": "hmyv2_getBalance",
+    //       "params": [publicKey]
+    //     })
+    // };
     
-    request(options, (error, response, body) => {
-        if (error) {
-            console.error('An error has occurred: ', error);
-        } else {
-            console.log('Post successful: response: ', body);
-        }
-    });
+    // request(options, (error, response, body) => {
+    //     if (error) {
+    //         console.error('An error has occurred: ', error);
+    //     } else {
+    //         console.log('Post successful: response: ', body);
+    //     }
+    // });
 
     //최근 블록
     res = await hmy.blockchain.getBlockNumber();
@@ -103,13 +103,13 @@ const test = async () => {
     // }
 
     //블록 정보
-    // res = await hmy.blockchain.getBlockByNumber({
-    //   blockNumber: numberToHex(21890027),
-    // });
-    // console.log(`====${shardURL}  21000000 블록 정보====`);
-    // console.log(res.result.transactions);
-    //let tx = res.result.transactions[0].hash;
-    //console.log(tx);
+    res = await hmy.blockchain.getBlockByNumber({
+      blockNumber: numberToHex(21890027),
+    });
+    console.log(`====${shardURL}  21890027 블록 정보====`);
+    console.log(res);
+    // let tx = res.result.transactions[0].hash;
+    // console.log(tx);
 
     let tx = '0x90eedbf5c0838cbd606eaed6c1df43036d6f5f6da866ce0e33fc05748e169918';
     //트랜잭션 정보
@@ -126,8 +126,8 @@ const test = async () => {
     //console.log(fromWei(hexToNumber(res.result.value), Units.one));
 
     //니모닉 생성
-    const myPhrase = new Wallet().newMnemonic();
-    console.log(`니모닉 코드 생성: ${myPhrase}`);
+    // const myPhrase = new Wallet().newMnemonic();
+    // console.log(`니모닉 코드 생성: ${myPhrase}`);
     // const pwd = '1234';
     // encryptPhrase(myPhrase, pwd).then((value) => {
     //   console.log(`암호화 값: ${value}`);
@@ -146,15 +146,15 @@ const test = async () => {
     //     ChainID.HmyTestnet,
     //   ),
     // );
-    const wallet = new Wallet(
-      shardURL,
-      ChainType.Harmony,
-      ChainID.HmyTestnet,
-    );
-    myPhrase = 'ensure grunt skill tone loop mechanic ethics yellow ball fence border increase';
-    const account = wallet.addByMnemonic(myPhrase,3);
-    console.log(account);
-    console.log(wallet);
+    // const wallet = new Wallet(
+    //   shardURL,
+    //   ChainType.Harmony,
+    //   ChainID.HmyTestnet,
+    // );
+    // myPhrase = 'ensure grunt skill tone loop mechanic ethics yellow ball fence border increase';
+    // const account = wallet.addByMnemonic(myPhrase,3);
+    // console.log(account);
+    // console.log(wallet);
 
 
     console.log('끝');

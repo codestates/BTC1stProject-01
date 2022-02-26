@@ -16,8 +16,7 @@ const createAccount = async () => {
     } else {
       result.account = [];
     }
-    alert(`생설할 HD지갑 PATH 번호: ${hdNumber}`);
-
+    
     try {
       chrome.storage.sync.get('password', function(pwd) {
         chrome.storage.local.get('mnemonic', function(mnemonic) {
@@ -46,6 +45,8 @@ const createAccount = async () => {
               accountList += `${result.account[i].addressForONE}\r\n`;
             }
             document.getElementById('account-stored').innerText= accountList;
+            alert(`${hdNumber + 1} 번째 계정이 생성되었습니다.\r\n지갑주소: ${response.data.data.addressForONE}`);
+            window.location.href = "/pages/main.html";
           })
           .catch(error=>{
             console.log(error)
@@ -59,6 +60,28 @@ const createAccount = async () => {
   });
 }
 
+const hideDiv = (id) => {
+  document.getElementById(id).style.display = "none";
+}
+const showDiv = (id) => {
+  document.getElementById(id).style.display = "block";
+}
+
+//스텝에 따른 화면 분기 세팅
+hideDiv("menu");
+
+/*
+ * 버튼에 따른 화면 전개
+ */
+//메뉴 실행
+document.getElementById('button-menu').onclick = async function () {
+  showDiv("menu");
+}
+document.getElementById('menu-close').onclick = async function () {
+  hideDiv("menu");
+}
+
+
 //계정생성
 document.getElementById('new-account').onclick = async function () {
   createAccount();
@@ -69,8 +92,6 @@ document.getElementById('button-logout').onclick = async function () {
   chrome.storage.sync.set({'password':null});
   window.location.href="/popup.html";
 }
-
-
 
 
 //클릭 이벤트 처리
@@ -99,8 +120,43 @@ chrome.storage.sync.get('password', function(result) {
 //계정 정보 추출
 const shardURL = 'https://api.s0.b.hmny.io/';
 const getAccountInfo = async (account) => {
+  //1,000ONE 짜리 샘플
+  //acount = 'one1t9cdtve9pueyzhmlutxa69l6tjhz0zf4evk6zq';
   try{
-    
+    //JSON RPC
+    // const response = await fetch(shardURL, {
+    //   body: JSON.stringify({
+    //     "jsonrpc": "2.0",
+    //     "id": "1",
+    //     "method": "hmyv2_getBalance",
+    //     "params": [account]
+    //   }),
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   method: "POST"
+    // });
+    // var data = await response.json();
+    // console.log(data);
+    // alert(JSON.stringify(data));
+
+
+    //니모닉 코드 발급
+    let result = await axios({
+      method: 'GET', //통신 방식
+      url: `http://localhost:4000/api/balance?address=${account}`, //통신할 페이지
+      data: {} //인자로 보낼 데이터
+    });
+    result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
+    document.getElementById('mainBalance').innerText = result;
+    // .then(response=>{
+    //   document.getElementById('balance').innerText=response.data.data + " ONE";
+    // })
+    // .catch(error=>{
+    //   console.log('에러');
+    //   alert(error);
+    // })
   } catch(e) {
     alert(e);
   }
@@ -109,28 +165,42 @@ const getAccountInfo = async (account) => {
 //계정이 존재하지 않는다면 첫 계정 생성
 chrome.storage.local.get('account', function(result) {          
   if(!result.account) {
-    alert('계정이 아직 존재하지 않음');
     createAccount();
   } else if(result.account.length == 0) {
-    alert('계정이 아직 존재하지 않음');
     createAccount();
   } else {
     console.log('계정 리스트');
     let accountList = '';
     for(let i=0;i<result.account.length;i++) {
-      console.log(result.account[i].addressForONE);
+      // 새로운 단락 요소를 생성하고 문서에 있는 바디 요소의 끝에 붙입니다.
+      var div = document.createElement("div");
+      div.className = "btn btn-light";
+      let sliceAddressEnd = result.account[i].addressForONE.slice(-4);
+      let sliceAddressStart = result.account[i].addressForONE.slice(0,6);
+      const myAddress = sliceAddressStart + "..." + sliceAddressEnd;
+      div.innerText = myAddress;
+      div.style.width = "100%";
+      document.getElementById('menu-account-list').appendChild(div);
       accountList += `${result.account[i].addressForONE}\r\n`;
     }
     document.getElementById('account-stored').innerText= accountList;
 
+    // <div id="menu-account-list" class="modal-body">
+    // <h5 style="text-align:left">내 계정 선택</h5>
+    // <div style="margin-top:0.1em;width:100%" class="btn btn-light">one17f...zk50</div>
+    // <div style="margin-top:0.1em;width:100%" class="btn btn-light">one1qh...znss</div>
+    // <div style="margin-top:0.1em;width:100%" class="btn btn-light">oneuxa...qydd</div>
+    // </div>
+
     //첫번째 계정을 화면에 보여주기
     getAccountInfo(result.account[0].addressForONE);
-
+    let sliceAddressEnd = result.account[0].addressForONE.slice(-4);
+    let sliceAddressStart = result.account[0].addressForONE.slice(0,4);
+    //const myAddress = sliceAddressStart + "..." + sliceAddressEnd;
+    const myAddress = result.account[0].addressForONE;
+    document.getElementById('mainAddress').innerText= myAddress;
   }
 });
-
-
-
 
 
 

@@ -123,4 +123,27 @@ router.get('/newaccount', async (req, res, next) => {
 });
 
 
+/*
+ *  /api/balance
+ */
+router.get('/balance', async (req, res, next) => {
+  console.log('======== 밸런스 조회 =========')
+  try {
+    let myAddress;
+    if(req.query.address) {
+      myAddress = req.query.address;
+    }
+
+    //계정 밸런스
+    let balance = await hmy.blockchain.getBalance({address: myAddress});
+    let result = fromWei(hexToNumber(balance.result), Units.one);
+    console.log('밸런스 in ONEs: ' + result);
+    
+    res.json({ message: "ok", data: result });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
 module.exports = router;
