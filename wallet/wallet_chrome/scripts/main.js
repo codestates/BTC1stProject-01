@@ -59,8 +59,15 @@ const createAccount = async () => {
   });
 }
 
+//계정생성
 document.getElementById('new-account').onclick = async function () {
   createAccount();
+}
+
+//잠금
+document.getElementById('button-logout').onclick = async function () {
+  chrome.storage.sync.set({'password':null});
+  window.location.href="/popup.html";
 }
 
 
@@ -89,10 +96,22 @@ chrome.storage.sync.get('password', function(result) {
   }
 });
 
+//계정 정보 추출
+const shardURL = 'https://api.s0.b.hmny.io/';
+const getAccountInfo = async (account) => {
+  try{
+    
+  } catch(e) {
+    alert(e);
+  }
+}
 
 //계정이 존재하지 않는다면 첫 계정 생성
 chrome.storage.local.get('account', function(result) {          
   if(!result.account) {
+    alert('계정이 아직 존재하지 않음');
+    createAccount();
+  } else if(result.account.length == 0) {
     alert('계정이 아직 존재하지 않음');
     createAccount();
   } else {
@@ -103,12 +122,29 @@ chrome.storage.local.get('account', function(result) {
       accountList += `${result.account[i].addressForONE}\r\n`;
     }
     document.getElementById('account-stored').innerText= accountList;
-  
-    alert(`계정 ${result.account.length}개 존재`);
+
+    //첫번째 계정을 화면에 보여주기
+    getAccountInfo(result.account[0].addressForONE);
+
   }
 });
 
-//계정 정보 초기화
-// chrome.storage.local.set({'account': null}, function() {
-// });
 
+
+
+
+
+//저장된 패스워드 확인
+chrome.storage.local.get('password', function(result) {
+  document.getElementById('password-stored').innerText= '저장된 패스워드 ' + result.password;
+});
+
+//임시 패스워드 확인
+chrome.storage.sync.get('password', function(result) {
+  document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+});
+
+//저장된 니모닉 확인
+chrome.storage.local.get('mnemonic', function(result) {
+  document.getElementById('mnemonic-stored').innerText= '저장된 니모닉 ' + result.mnemonic;
+});

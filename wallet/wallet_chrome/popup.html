@@ -8,7 +8,7 @@
   </head>
   <body style="width:20em;height:34em">
     <div id="logo" style="margin-top:0.4em;margin-left:0.4em;margin-bottom:2em">
-      <a href="./popup.html">
+      <a href="/popup.html">
         <img src="./images/n48.png" />
       </a>
     </div>
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <!-- 스텝4. 니모닉 생성 -->
+    <!-- 스텝5. 니모닉 확인 -->
     <div id="start-step-5">
       <div style="margin:1em;padding:1em 0.4em">
         <center>
@@ -124,13 +124,29 @@
       </div>
     </div>
 
-    <div style="height:4em;margin-bottom:6em">
+    <!-- 스텝5. 로그인 페이지 -->
+    <div id="login">
+      <img style="width:100%" src="/images/banner.jpeg" />
+      <center style="margin:1em 1em;padding:1em 0.4em">
+        <h4>환영합니다!</h4>
+        <p style="margin-top:1em">하모니(ONE) 블록체인 지갑을 제공합니다</p>
+        <p style="text-align:left;font-size:0.9em;margin-top:4em;margin-bottom:-0.1em">암호</p>
+        <input style="width:100%" type="password" id="pwd-login" autofocus></input>
+        <div style="margin:3em 0em 1.6em 0em">
+          <button style="width:80%" class="btn-lg btn-primary" id="button-login">잠금 해제</button>
+        </div>
+        <p id="button-recover" class="btn-light" style="font-size:0.9em;">비밀 복구 구문을 사용해 가져오기</p>
+        <p id="button-init" class="btn-light" style="font-size:0.9em;">초기화</p>
+      </center>
+    </div>
+
+    <div style="margin-bottom:6em;word-wrap:break-word;">
       <h5 id="mnemonic-stored"></h5>
     </div>
-    <div style="height:4em;margin-bottom:6em">
+    <div style="height:4em;margin-bottom:6em;word-wrap:break-word;">
       <h5 id="password-stored"></h5>
     </div>
-    <div style="height:4em;margin-bottom:6em">
+    <div style="height:4em;margin-bottom:6em;word-wrap:break-word;">
       <h5 id="password-sync"></h5>
     </div>
 

@@ -22,6 +22,7 @@ hideDiv("start-step-2");
 hideDiv("start-step-3");
 hideDiv("start-step-4");
 hideDiv("start-step-5");
+hideDiv("login");
 hideDiv("start-step-temp");
 
 /*
@@ -65,7 +66,7 @@ document.getElementById('button-step-3').onclick = async function () {
 
     //패스워드를 새로 생성했으므로 니모닉, 계정 모두 초기화 (생성순서: 암호 -> 니모닉 -> 계정)
     chrome.storage.local.set({'mnemonic': null});
-    chrome.storage.local.set({'account': null});
+    chrome.storage.local.set({'account': []});
 
     hideDiv("start-step-3");
     showDiv("start-step-4");
@@ -111,6 +112,43 @@ document.getElementById('createMnemonic').onclick = async function () {
   }
 }
 
+//로그인
+document.getElementById('button-login').onclick = async function () {
+  let pwd = document.getElementById("pwd-login").value;
+  chrome.storage.local.get('password', function(result) {
+    //만약 사용자의 입력값을 SHA256으로 해싱한 값이 저장되어 있는 값과 같다면
+    let encPwd = result.password;
+
+    if(SHA256(pwd) == encPwd) {
+      //브라우저에 임시 저장
+      chrome.storage.sync.set({'password': pwd}, function(result) {
+        //저장된 패스워드 확인
+        chrome.storage.sync.get('password', function(result) {
+          document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+          window.location.href = "/pages/main.html";
+        });
+      });
+    } else {
+      alert('패스워드가 일치하지 않습니다');
+    }
+
+  })
+}
+
+//초기화
+document.getElementById('button-init').onclick = async function () {
+  chrome.storage.sync.set({'password': null}, function(result) {
+    chrome.storage.local.set({'password': null}, function(result) {
+      chrome.storage.local.set({'mnemonic': null}, function(result) {
+        chrome.storage.local.set({'account': []}, function(result) {
+          alert('지갑이 초기화 되었습니다');
+          window.location.href="/popup.html";
+        });
+      });
+    });
+  });
+}
+
 chrome.storage.local.get('mnemonic', function(result) {
   console.log('저장된 니모닉 ' + result.mnemonic);
   document.getElementById('mnemonic-stored').innerText= '저장된 니모닉 ' + result.mnemonic;
@@ -121,13 +159,18 @@ chrome.storage.local.get('mnemonic', function(result) {
     //alert('니모닉이 존재하지 않습니다');
     hideDiv("logo");
     showDiv("start-step-1");
-  } else {
-    alert('니모닉 존재 ' + result.mnemonic);
-    
-    //임시 테스트 (여기 로직은 '니모닉' 이 존재하는 경우. 즉 패스워드와 니모닉 모두 존재하는 경우 로그인)
-    //로그인 프로세스 넣어야됨
-    hideDiv("logo");
-    showDiv("start-step-1");
+  } else {    
+    //로그인 프로세스
+
+    //로그인 상태인지 확인
+    chrome.storage.sync.get('password', function(result) {
+      if(result.password) {
+        window.location.href = "/pages/main.html";
+      } else {
+        hideDiv("logo");
+        showDiv("login");
+      }
+    });
   }
 });
 
@@ -140,6 +183,7 @@ chrome.storage.local.get('password', function(result) {
 chrome.storage.sync.get('password', function(result) {
   document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
 });
+
 
 //니모닉 키스토어 초기화
 // chrome.storage.local.set({'mnemonic': null}, function() {
