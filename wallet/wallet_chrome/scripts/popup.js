@@ -137,16 +137,25 @@ document.getElementById('button-login').onclick = async function () {
 
 //초기화
 document.getElementById('button-init').onclick = async function () {
-  chrome.storage.sync.set({'password': null}, function(result) {
-    chrome.storage.local.set({'password': null}, function(result) {
-      chrome.storage.local.set({'mnemonic': null}, function(result) {
-        chrome.storage.local.set({'account': []}, function(result) {
-          alert('지갑이 초기화 되었습니다');
-          window.location.href="/popup.html";
-        });
-      });
-    });
-  });
+  // chrome.storage.sync.set({'password': null}, function(result) {
+  //   chrome.storage.local.set({'password': null}, function(result) {
+  //     chrome.storage.local.set({'mnemonic': null}, function(result) {
+  //       chrome.storage.local.set({'account': []}, function(result) {
+  //         chrome.storage.sync.set({'account-selected': null}, function(result) {
+  //           alert('지갑이 초기화 되었습니다');
+  //           window.location.href="/popup.html";
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+  chrome.storage.sync.set({'password': null});
+  chrome.storage.local.set({'password': null});
+  chrome.storage.local.set({'mnemonic': null});
+  chrome.storage.local.set({'account': []});
+  chrome.storage.sync.set({'accountSelected': null});
+  alert('지갑이 초기화 되었습니다');
+  window.location.href="/popup.html";
 }
 
 chrome.storage.local.get('mnemonic', function(result) {
