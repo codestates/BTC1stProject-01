@@ -315,6 +315,26 @@ router.get('/transfer', async (req, res, next) => {
     //Gas Used          646146
     //Gas Price         0.00000003 ONE
 
+    const confiremdTxn = await sentTxn.confirm(txnHash);
+
+    // if the transactino is cross-shard transaction
+    if (!confiremdTxn.isCrossShard()) {
+      if (confiremdTxn.isConfirmed()) {
+        console.log('--- Result ---');
+        console.log('');
+        console.log('Normal transaction');
+        console.log(`${txnHash} is confirmed`);
+        console.log(sentTxn);
+      }
+    }
+    if (confiremdTxn.isConfirmed() && confiremdTxn.isCxConfirmed()) {
+      console.log('--- Result ---');
+      console.log('');
+      console.log('Cross-Shard transaction');
+      console.log(`${txnHash} is confirmed`);
+      console.log(sentTxn);
+    }
+
 
 
     res.json({ message: "ok", data: `전송 완료 : ${txnHash}`});
@@ -371,6 +391,7 @@ router.get('/activity', async (req, res, next) => {
     // console.log('밸런스 in ONEs: ' + result);
     
     let result;
+    console.log(`myAddress : ${myAddress}`);
     //활동 내역
     let options = {
         url: shardURL,
@@ -380,7 +401,16 @@ router.get('/activity', async (req, res, next) => {
           "jsonrpc": "2.0",
           "id": "1",
           "method": "hmyv2_getTransactionsHistory",
-          "params": [myAddress]
+          "params": [
+            {
+              "address": myAddress,
+              //"pageIndex": 0,
+              //"pageSize": 1,
+              "fullTx": true,
+              "txType": "ALL",
+              "order": "DESC"
+            }
+          ]
         })
     };
     
@@ -388,8 +418,9 @@ router.get('/activity', async (req, res, next) => {
         if (error) {
           console.error('An error has occurred: ', error);
         } else {
-          console.log('Post successful: response: ', body);
-          result = body.result;
+          console.log(body);
+          result = JSON.parse(body).result.transactions;
+          console.log(result);
         }
         res.json({ message: "ok", data: result });
     });

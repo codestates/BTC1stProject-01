@@ -199,11 +199,8 @@ const getActivityInfo = async (account) => {
           url: `http://localhost:4000/api/activity?address=${account}&shard=${myShard}&network=${myNetwork}`, //통신할 페이지
           data: {} //인자로 보낼 데이터
         })
-        .then(resultOfInit => {
-          //result = Number(resultOfInit.data.data.balance).toLocaleString('ko-KR') + " ONE";
-          //document.getElementById('mainBalance').innerText = result;
-          //document.getElementById('transfer-balance').innerText = `전송 가능 수량: ${result}`;
-          alert(resultOfInit.data.data);
+        .then(result => {
+          지헌
         })
       });
     });
