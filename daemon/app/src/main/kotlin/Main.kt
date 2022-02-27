@@ -3,9 +3,7 @@ import entity.JsonRpcResponse
 
 fun main(args: Array<String>) {
     val shardName = System.getProperty("targetShard") ?: throw RuntimeException("targetShard cannot be null")
-    val fetchSize = System.getProperty("fetchSize")?.let {
-        it.toLong()
-    } ?: 1000
+    val fetchSize = System.getProperty("fetchSize").ifBlank { "1000" }.toLong()
 //    val shardName = "SHARD_00"
     val now =  System.currentTimeMillis()
 
@@ -26,7 +24,7 @@ fun main(args: Array<String>) {
     blockMeta.isRunning = true
     metaRepository.update(blockMeta)
 
-    print("Daemon is running at $now, lastUpdatedAt: ${blockMeta.lastUpdatedAt}, lastBlockNumber:${blockMeta.lastBlockNumber}")
+    println("Daemon is running at $now, lastUpdatedAt: ${blockMeta.lastUpdatedAt}, lastBlockNumber:${blockMeta.lastBlockNumber}")
 
     val blocks: JsonRpcResponse<List<HarmonyBlock>>? = harmonyService.getBlocks(blockMeta.lastBlockNumber!!, blockMeta.lastBlockNumber!! + fetchSize)
     blocks?.result?.forEach {

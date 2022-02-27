@@ -32,3 +32,5 @@
 !gradle-wrapper.properties
 
 daemon/app/.idea/
+
+daemon/app/src/main/resources/META-INF/
