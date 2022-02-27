@@ -11,17 +11,18 @@ function Dnwpage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const URLparam = document.location.href.split("block/")[1];
-    setNumber(URLparam);
-
     let shard_type_blocks = [[], [], [], []];
+
+    setNumber(document.location.href.split("block/")[1]);
+    call();
     async function call() {
       setLoading(true);
+      let URLparam = document.location.href.split("block/")[1];
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-
+      console.log("????", number);
       await axios
         .post(
           "https://rpc.s0.b.hmny.io", //프론트에서 하모니테스트서버로 블록넘버조회를 하는 요청을 날린다. 샤드0부터 검색
@@ -30,7 +31,7 @@ function Dnwpage() {
             id: 32,
             method: "hmyv2_getBlockByNumber",
             params: [
-              number,
+              URLparam,
               {
                 fullTx: true,
                 inclTx: true,
@@ -51,7 +52,7 @@ function Dnwpage() {
             id: 32,
             method: "hmyv2_getBlockByNumber",
             params: [
-              number,
+              URLparam,
               {
                 fullTx: true,
                 inclTx: true,
@@ -72,7 +73,7 @@ function Dnwpage() {
             id: 32,
             method: "hmyv2_getBlockByNumber",
             params: [
-              number,
+              URLparam,
               {
                 fullTx: true,
                 inclTx: true,
@@ -93,7 +94,7 @@ function Dnwpage() {
             id: 32,
             method: "hmyv2_getBlockByNumber",
             params: [
-              number,
+              URLparam,
               {
                 fullTx: true,
                 inclTx: true,
@@ -106,12 +107,11 @@ function Dnwpage() {
         .then((result) => {
           shard_type_blocks[3].push(result.data.result);
         });
+
       setBlock(shard_type_blocks); //현재 총 불러온 데이터를 state로 저장
       setLoading(false);
     }
-
-    call();
-  }, []);
+  }, [number]);
 
   function changeShard(e) {
     // 콤보박스에서 누르는 샤드 번호에 따라 선택 중인 샤드를 state로 관리
@@ -556,24 +556,32 @@ function Dnwpage() {
                 <div className="upColor">
                   {" "}
                   {now_shard === 0 && block.length !== 0
-                    ? block[0].map((el) => {
-                        return el.transactions;
-                      })
+                    ? block[0][0].transactions.length > 0
+                      ? block[0][0].transactions.map((el) => {
+                          return <div>{el.hash}</div>;
+                        })
+                      : null
                     : null}
                   {now_shard === 1 && block.length !== 0
-                    ? block[1].map((el) => {
-                        return el.transactions;
-                      })
+                    ? block[1][0].transactions.length > 0
+                      ? block[1][0].transactions.map((el) => {
+                          return <div>{el.hash}</div>;
+                        })
+                      : null
                     : null}
                   {now_shard === 2 && block.length !== 0
-                    ? block[2].map((el) => {
-                        return el.transactions;
-                      })
+                    ? block[2][0].transactions.length > 0
+                      ? block[2][0].transactions.map((el) => {
+                          return <div>{el.hash}</div>;
+                        })
+                      : null
                     : null}
                   {now_shard === 3 && block.length !== 0
-                    ? block[3].map((el) => {
-                        return el.transactions;
-                      })
+                    ? block[3][0].transactions.length > 0
+                      ? block[3][0].transactions.map((el) => {
+                          return <div>{el.hash}</div>;
+                        })
+                      : null
                     : null}
                 </div>
               </div>

@@ -10,6 +10,7 @@ function Dnwpage() {
   const [balance, setBalance] = useState([[0], [0], [0], [0]]);
   const [now_shard, setNow_shard] = useState(0);
   const [shard, setShard] = useState("Shard 0");
+  console.log(balance);
 
   useEffect(() => {
     const URLparam = document.location.href.split("dnw/")[1];
@@ -28,7 +29,7 @@ function Dnwpage() {
             jsonrpc: "2.0",
             id: 1,
             method: "hmyv2_getBalance",
-            params: [address],
+            params: [document.location.href.split("dnw/")[1]],
           },
           headers
         )
@@ -44,7 +45,7 @@ function Dnwpage() {
             jsonrpc: "2.0",
             id: 1,
             method: "hmyv2_getBalance",
-            params: [address],
+            params: [document.location.href.split("dnw/")[1]],
           },
           headers
         )
@@ -60,7 +61,7 @@ function Dnwpage() {
             jsonrpc: "2.0",
             id: 1,
             method: "hmyv2_getBalance",
-            params: [address],
+            params: [document.location.href.split("dnw/")[1]],
           },
           headers
         )
@@ -76,7 +77,7 @@ function Dnwpage() {
             jsonrpc: "2.0",
             id: 1,
             method: "hmyv2_getBalance",
-            params: [address],
+            params: [document.location.href.split("dnw/")[1]],
           },
           headers
         )
