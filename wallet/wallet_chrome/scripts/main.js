@@ -200,13 +200,70 @@ const getActivityInfo = async (account) => {
           data: {} //인자로 보낼 데이터
         })
         .then(result => {
-          지헌
+          result = result.data.data;
+          // 보내기 or 받기
+          // 받은 주소
+          // 금액
+          // 샤드 0 to 1
+          // 시간
+          for(let i=0;i<result.length;i++) {
+            // 새로운 단락 요소를 생성하고 문서에 있는 바디 요소의 끝에 부인다
+            let div = document.createElement("div");
+            div.className = "btn btn-light";
+            div.id = "activity-instance"
+            div.style['margin-top'] = '0.1em';
+            div.style['font-size'] = '0.8em';
+            div.style['word-wrap'] = 'break-word';
+            div.style['text-align'] = 'left';
+            div.style.width = "100%";
+            
+            div.name = result[i].hash;
+    
+            //클릭 이벤트
+            div.addEventListener('click', function(){
+              alert('새창 띄워주야 된다 ' + this.name);
+            });
+            
+            //데이터 적재
+            let output = '';
+            if(result[i].to == result[i].from) {
+              output += `<span style="color:red">나에게 전송</span></br>`;
+            } else if(result[i].from == account){
+              let sliceAddressEnd = result[i].to.slice(-8);
+              let sliceAddressStart = result[i].to.slice(0,6);
+              let exchanger = sliceAddressStart + "..." + sliceAddressEnd;
+              output += `<span style="color:blue">보내기</span> to ${exchanger}</br>`;
+            } else if(result[i].to == account){
+              let sliceAddressEnd = result[i].from.slice(-8);
+              let sliceAddressStart = result[i].from.slice(0,6);
+              let exchanger = sliceAddressStart + "..." + sliceAddressEnd;
+              output += `<span style="color:blue">받기</span> from ${exchanger}</br>`;
+            }
+            output += `<b style="font-size:1.2em">${result[i].value} ONE</b></br>`;
+            let timestamp = convertTimestamp(result[i].timestamp);
+            output += `shard ${myShard} to ${result[i].toShardID}<span style="float:right">${timestamp}</span></br>`;
+            
+            div.innerHTML = output;
+            document.getElementById('activity-list').appendChild(div);
+          }
         })
       });
     });
   } catch(e) {
     alert(e);
   }
+}
+
+function convertTimestamp(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let year = date.getFullYear().toString(); //년도 뒤에 두자리
+  let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+  let day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+  let hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
+  let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
+  let second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
+  let returnDate = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+  return returnDate;
 }
 
 

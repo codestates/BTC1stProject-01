@@ -418,9 +418,10 @@ router.get('/activity', async (req, res, next) => {
         if (error) {
           console.error('An error has occurred: ', error);
         } else {
-          console.log(body);
           result = JSON.parse(body).result.transactions;
-          console.log(result);
+          for(let i=0;i<result.length;i++) {
+            result[i].value = fromWei(String(result[i].value), Units.one);
+          }
         }
         res.json({ message: "ok", data: result });
     });
