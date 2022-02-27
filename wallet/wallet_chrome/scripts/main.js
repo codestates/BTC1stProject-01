@@ -119,6 +119,7 @@ chrome.storage.sync.get('password', function(result) {
   }
 });
 
+
 //계정 정보 추출
 const getAccountInfo = async (account) => {
   try{
@@ -179,6 +180,38 @@ const getAccountInfo = async (account) => {
   }
 }
 
+//계정 활동 추출
+const getActivityInfo = async (account) => {
+  try{
+    chrome.storage.sync.get('currentNetwork', function(myNetwork) {
+      myNetwork = myNetwork.currentNetwork;
+      if(!myNetwork) {
+        myNetwork = 'testnet';
+      }
+      chrome.storage.sync.get('currentShard', function(myShard) {
+        myShard = myShard.currentShard;
+        if(!myShard) {
+          myShard = 0;
+        }
+        //밸런스 확인
+        axios({
+          method: 'GET', //통신 방식
+          url: `http://localhost:4000/api/activity?address=${account}&shard=${myShard}&network=${myNetwork}`, //통신할 페이지
+          data: {} //인자로 보낼 데이터
+        })
+        .then(resultOfInit => {
+          //result = Number(resultOfInit.data.data.balance).toLocaleString('ko-KR') + " ONE";
+          //document.getElementById('mainBalance').innerText = result;
+          //document.getElementById('transfer-balance').innerText = `전송 가능 수량: ${result}`;
+          alert(resultOfInit.data.data);
+        })
+      });
+    });
+  } catch(e) {
+    alert(e);
+  }
+}
+
 
 /*
 * 메인 화면 초기 세팅
@@ -198,9 +231,9 @@ chrome.storage.local.get('account', function(result) {
   } else if(result.account.length == 0) {
     firstLogin();
   } else {
-    console.log('계정 리스트');
-    //let accountList = '';
+    //계정이 존재한다면 각종 정보 초기화
 
+    //계정 정보 초기화
     chrome.storage.sync.get('accountSelected', function(selected) { 
       for(let i=0;i<result.account.length;i++) {
         myFullAddress = result.account[i].addressForONE;
@@ -243,6 +276,7 @@ chrome.storage.local.get('account', function(result) {
 
 
     //선택된 계정을 화면에 보여주기
+    //계정 활동 내역 보여주기
     chrome.storage.sync.get('accountSelected', function(selected) {
       let myAddress;
       if(selected.accountSelected) {
@@ -252,6 +286,7 @@ chrome.storage.local.get('account', function(result) {
         chrome.storage.sync.set({'accountSelected':myAddress});
       }
       getAccountInfo(myAddress);
+      getActivityInfo(myAddress);
       document.getElementById('mainAddress').innerText= myAddress;
     })
     
@@ -351,10 +386,12 @@ document.getElementById('button-transfer').onclick = async function () {
   showDiv("step-transfer");
 }
 
+
 //전송 화면 '취소' 버튼
 document.getElementById('button-transfer-cancel').onclick = async function () {
   refreshPage();
 }
+
 
 //gas price 변경 시
 document.getElementById('transfer-gas-price').onkeyup = async function () {
@@ -370,6 +407,7 @@ document.getElementById('transfer-gas-price').onkeyup = async function () {
     }
   }
 }
+
 
 //gas limit 변경 시
 document.getElementById('transfer-gas-limit').onkeyup = async function () {

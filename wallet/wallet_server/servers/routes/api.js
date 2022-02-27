@@ -324,4 +324,78 @@ router.get('/transfer', async (req, res, next) => {
   }
 });  
 
+
+/*
+ *  /api/activity
+ */
+router.get('/activity', async (req, res, next) => {
+  console.log('======== 활동 조회 =========')
+  try {
+    let myAddress, myShard, myNetwork;
+    if(req.query.address) {
+      myAddress = req.query.address;
+      myShard = req.query.shard;
+      myNetwork = req.query.network;
+    }
+    console.log(`샤드번호 :  ${myShard}`);
+    console.log(`네트워크 :  ${myNetwork}`);
+
+    let networkType, myChainId;
+    if(myNetwork == 'mainnet') {
+      networkType = 't';
+      myChainId = ChainID.HmyMainnet;
+    } else {
+      networkType = 'b';
+      myChainId = ChainID.HmyTestnet;
+    }
+    
+    //만약 샤드 정보가 변경되었다면 hmy 객체 변경
+    let myEndpoint = `https://api.s${myShard}.${networkType}.hmny.io/`;
+    console.log(`엔드포인트 : ${myEndpoint}`)
+    console.log(`체인ID : ${myChainId}`)
+    if(shardURL != myEndpoint) {
+      shardURL = myEndpoint;
+      hmy = new Harmony(
+        shardURL,
+        {
+            chainType: ChainType.Harmony,
+            chainId: myChainId
+        },
+      );
+    }
+
+    //계정 밸런스
+    // let balance = await hmy.blockchain.getBalance({address: myAddress});
+    // let result = {};
+    // result.balance = fromWei(hexToNumber(balance.result), Units.one);
+    // console.log('밸런스 in ONEs: ' + result);
+    
+    let result;
+    //활동 내역
+    let options = {
+        url: shardURL,
+        method: "post",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify({
+          "jsonrpc": "2.0",
+          "id": "1",
+          "method": "hmyv2_getTransactionsHistory",
+          "params": [myAddress]
+        })
+    };
+    
+    request(options, (error, response, body) => {
+        if (error) {
+          console.error('An error has occurred: ', error);
+        } else {
+          console.log('Post successful: response: ', body);
+          result = body.result;
+        }
+        res.json({ message: "ok", data: result });
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;
