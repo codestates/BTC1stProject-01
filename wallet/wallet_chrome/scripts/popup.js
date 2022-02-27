@@ -149,13 +149,15 @@ document.getElementById('button-init').onclick = async function () {
   chrome.storage.local.set({'mnemonic': null});
   chrome.storage.local.set({'account': []});
   chrome.storage.sync.set({'accountSelected': null});
+  chrome.storage.sync.set({'currentShard': 0});
+  chrome.storage.sync.set({'currentNetwork': 'testnet'});
   alert('지갑이 초기화 되었습니다');
   window.location.href="/popup.html";
 }
 
 chrome.storage.local.get('mnemonic', function(result) {
   console.log('저장된 니모닉 ' + result.mnemonic);
-  document.getElementById('mnemonic-stored').innerText= '저장된 니모닉 ' + result.mnemonic;
+  //document.getElementById('mnemonic-stored').innerText= '저장된 니모닉 ' + result.mnemonic;
 
   //저장된 니모닉이 없다면
   if(!result.mnemonic) {
@@ -177,15 +179,15 @@ chrome.storage.local.get('mnemonic', function(result) {
   }
 });
 
-//저장된 패스워드 확인
-chrome.storage.local.get('password', function(result) {
-  document.getElementById('password-stored').innerText= '저장된 패스워드 ' + result.password;
-});
+// //저장된 패스워드 확인
+// chrome.storage.local.get('password', function(result) {
+//   document.getElementById('password-stored').innerText= '저장된 패스워드 ' + result.password;
+// });
 
-//임시 패스워드 확인
-chrome.storage.sync.get('password', function(result) {
-  document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
-});
+// //임시 패스워드 확인
+// chrome.storage.sync.get('password', function(result) {
+//   document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+// });
 
 
 //니모닉 키스토어 초기화

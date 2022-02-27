@@ -35,8 +35,8 @@ const {
   decryptPhrase
 } = require('@harmony-js/crypto');
 
-const shardURL = 'https://api.s0.b.hmny.io/'; //테스트
-const hmy = new Harmony(
+let shardURL = 'https://api.s0.b.hmny.io/'; //앤드포인트 URL
+let hmy = new Harmony(
   shardURL,
   {
       chainType: ChainType.Harmony,
@@ -129,9 +129,24 @@ router.get('/newaccount', async (req, res, next) => {
 router.get('/balance', async (req, res, next) => {
   console.log('======== 밸런스 조회 =========')
   try {
-    let myAddress;
+    let myAddress, myShard;
     if(req.query.address) {
       myAddress = req.query.address;
+      myShard = req.query.shard;
+    }
+    console.log(`샤드 번호 :  ${myShard}`)
+
+    //만약 샤드 정보가 변경되었다면 hmy 객체 변경
+    myShard = `https://api.s${myShard}.b.hmny.io/`;
+    if(shardURL != myShard) {
+      shardURL = myShard;
+      hmy = new Harmony(
+        shardURL,
+        {
+            chainType: ChainType.Harmony,
+            chainId: ChainID.HmyTestnet,
+        },
+      );
     }
 
     //계정 밸런스

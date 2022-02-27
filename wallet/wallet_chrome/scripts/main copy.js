@@ -146,16 +146,21 @@ const getAccountInfo = async (account) => {
         myShard = 0;
       }
       //밸런스 확인
-      axios({
+      let result = await axios({
         method: 'GET', //통신 방식
         url: `http://localhost:4000/api/balance?address=${account}&shard=${myShard}`, //통신할 페이지
-        //url: `http://localhost:4000/api/balance?address=${account}`, //통신할 페이지
         data: {} //인자로 보낼 데이터
-      })
-      .then(result => {
-        result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
-        document.getElementById('mainBalance').innerText = result;
-      })
+      });
+      result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
+      document.getElementById('mainBalance').innerText = result;
+      // .then(response=>{
+      //   document.getElementById('balance').innerText=response.data.data + " ONE";
+      // })
+      // .catch(error=>{
+      //   console.log('에러');
+      //   alert(error);
+      // })
+
     });
   } catch(e) {
     alert(e);
@@ -240,7 +245,7 @@ chrome.storage.local.get('account', function(result) {
     
     //샤드 정보 확인
     chrome.storage.sync.get('currentShard', function(selected) {
-      document.getElementById('shard-select').getElementsByTagName('option')[selected.currentShard].selected = 'selected'
+      document.getElementById('mainAddress').selected = selected.currentShard;
     })
   }
 });
@@ -306,7 +311,6 @@ document.getElementById('shard-select').onchange = async function () {
   alert('샤드 변경 ' + selectValue);
   chrome.storage.sync.set({'currentShard':selectValue}, function(result) {
     //밸런스 갱신
-    refreshPage();
   });
 }
 
