@@ -146,4 +146,27 @@ router.get('/balance', async (req, res, next) => {
 });
 
 
+/*
+ *  /api/privateKey?encdata=${encPrivateKey}&pwd=${pwd}
+ */
+router.get('/privateKey', async (req, res, next) => {
+  console.log('======== 개인키 조회 =========')
+  try {
+    let myEncData, myPwd;
+    if(req.query) {
+      myEncData = req.query.encdata;
+      myPwd = req.query.pwd;
+    }
+
+    //니모닉 코드 복호화
+    let decPrivateKey = await decryptPhrase(JSON.parse(myEncData), myPwd);
+    console.log(decPrivateKey);
+    
+    res.json({ message: "ok", data: decPrivateKey });
+  } catch (err) {
+    console.error(err);
+  }
+});         
+
+
 module.exports = router;

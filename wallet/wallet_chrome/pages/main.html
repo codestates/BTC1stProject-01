@@ -54,11 +54,17 @@
 
     <div>
       <center>
-        <div style="margin-bottom:6em;word-wrap:break-word;">
-          <h5 id="account-list" style="background-color: #DDD"></h5>
+        <div>
+          Shard :
+          <select class="form-select" aria-label="Default select example">
+            <option selected>0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </div>
-        <div style="margin-bottom:2em">
-          <button class="btn btn-primary" id ="button-transfer">보내기</button>
+        <div style="margin-top:4em">
+          <button style="width:90%" class="btn btn-danger" id ="button-transfer">전송</button>
         </div>
       </center>
     </div>
@@ -76,6 +82,26 @@
           <button style="width:80%" class="btn-lg btn-primary" id="button-password">확인</button>
         </div>
       </center>
+    </div>
+
+    <!-- 스텝. 개인키 확인 -->
+    <div id="step-private-key">
+      <div style="margin:1em;padding:1em 0.4em">
+        <center>
+          <h5>계정 주소</h5>
+          <div style="height:3em;margin-bottom:2em;">
+            <p id="publicKey-data" style="word-wrap:break-word;"></p>
+          </div>
+          <h4 style="margin-top:2em">개인키 정보</h4>
+          <p style="margin-top:1em">친구에게 알려주면 친구는 부자, 당신은 거지</p>
+          <div style="height:3em;margin-bottom:6em;">
+            <h5 id="privateKey-data" style="word-wrap:break-word;background-color: #DDD"></h5>
+          </div>
+          <div style="margin-bottom:2em">
+            <a href="/pages/main.html"><button class="btn btn-primary" id="button-step-5">돌아가기</button></a>
+          </div>
+        </center>
+      </div>
     </div>
 
 
@@ -98,10 +124,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
  
+    <script src="/scripts/SHA256.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="/scripts/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>

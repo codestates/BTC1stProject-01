@@ -75,6 +75,8 @@ const showDiv = (id) => {
 
 //스텝에 따른 화면 분기 세팅
 hideDiv("menu");
+hideDiv("step-password");
+hideDiv("step-private-key");
 
 /*
  * 버튼에 따른 화면 전개
@@ -228,32 +230,63 @@ chrome.storage.local.get('account', function(result) {
 });
 
 
+//개인키 확인을 위한 패스워드 입력 창
+document.getElementById('export-account').onclick = async function () {
+  hideDiv("menu");
+  hideDiv("step-main");
+  showDiv("step-password");
+}
+
+
 //개인키 확인을 위한 인증
-document.getElementById('button-password').onclick = async function () {
-  let pwd = document.getElementById("pwd-login").value;
-  chrome.storage.local.get('password', function(result) {
-    //입력받은 암호를 SHA256 로 해싱한 값과, 암호화된 개인키를 서버에 보낸다
-    let encPrivateKey = result.password;
+document.getElementById('button-password').onclick = async function () {  
+  try {
+    let pwd = document.getElementById("pwd-login").value;
+    chrome.storage.local.get('password', function(result) {
+      let encPwd = result.password;
 
-    //잠자자.
-    //만약 패스워드가 일치하면, 해당 계정의 암호화된 개인키를 get('account') 후 for 문
-    //암호 & 암호화된 개인키를 서버에 요청하는 로직부터ㅋ
-    //그리고 서버에서 받아서 복호화한다음 결과값을 화면에 뿌려야 한다
-    //별도 화면 step을 만들자 (거기서 확인 버튼 누르면 page refresh)
-    if(SHA256(pwd) == encPwd) {
-      //브라우저에 임시 저장
-      chrome.storage.sync.set({'password': pwd}, function(result) {
-        //저장된 패스워드 확인
-        chrome.storage.sync.get('password', function(result) {
-          document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
-          window.location.href = "/pages/main.html";
+      if(SHA256(pwd) == encPwd) {
+        //만약 사용자의 입력값을 SHA256으로 해싱한 값이 저장되어 있는 값과 같다면
+        chrome.storage.local.get('account', function(arrAccount) {
+          arrAccount = arrAccount.account;
+          for(let i=0;i<arrAccount.length;i++) {
+            let encPrivateKey = arrAccount[i].privateKey;
+            let publicKey = arrAccount[i].addressForONE;
+
+            //선택되어 있는 주소와 같은 instance인지 확인
+            chrome.storage.sync.get('accountSelected', function(targetAddr) {
+                targetAddr = targetAddr.accountSelected;
+                if(publicKey == targetAddr) {
+                  //사용자 암호와, 암호화된 개인키를 서버에 보내서 복호화된 개인키를 추출한다
+                  axios({
+                    method: 'GET', //통신 방식
+                    url: `http://localhost:4000/api/privateKey?encdata=${encPrivateKey}&pwd=${pwd}`, //통신할 페이지
+                    data: {} //인자로 보낼 데이터
+                  })
+                  .then(res => {
+                    let decPrivateKey = res.data.data;
+                    document.getElementById('privateKey-data').innerText = decPrivateKey;
+                    document.getElementById('publicKey-data').innerText = publicKey;
+                    hideDiv('step-password');
+                    showDiv('step-private-key');
+                  })
+                }
+            });
+          }
         });
-      });
-    } else {
-      alert('패스워드가 일치하지 않습니다');
-    }
+      } else {
+        alert('패스워드가 일치하지 않습니다');
+      }
 
-  })
+      //잠자자.
+      //그리고 서버에서 받아서 복호화한다음 결과값을 화면에 뿌려야 한다
+      //별도 화면 step을 만들자 (거기서 확인 버튼 누르면 page refresh)
+
+
+    })
+  } catch(e) {
+    alert(e);
+  }
 }
 
 
