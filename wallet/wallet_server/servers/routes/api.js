@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config/config');
-const hostURI = config.development.host_metadata;
 const converter = require('bech32-converting');
+const request = require('request');
 
 // import or require Harmony class
 const { Harmony } = require('@harmony-js/core');
@@ -15,6 +15,7 @@ const {
   hexToNumber,
   numberToHex,
   fromWei,
+  fromOne,
   Units,
   Unit,
   toAscii
@@ -164,9 +165,38 @@ router.get('/balance', async (req, res, next) => {
 
     //계정 밸런스
     let balance = await hmy.blockchain.getBalance({address: myAddress});
-    let result = fromWei(hexToNumber(balance.result), Units.one);
+    let result = {};
+    result.balance = fromWei(hexToNumber(balance.result), Units.one);
     console.log('밸런스 in ONEs: ' + result);
     
+
+    //가스 확인
+    // let options = {
+    //     url: shardURL,
+    //     method: "post",
+    //     headers: {"content-type": "application/json"},
+    //     body: JSON.stringify({
+    //       "jsonrpc": "2.0",
+    //       "id": "1",
+    //       "method": "hmyv2_gasPrice",
+    //       "params": []
+    //     })
+    // };
+    
+    // request(options, (error, response, body) => {
+    //     if (error) {
+    //         console.error('An error has occurred: ', error);
+    //         result.gasPrice = 1;
+    //     } else {
+    //         console.log('Post successful: response: ', body);
+    //         result.gasPrice = body.result;
+    //     }
+    //     console.log(`가스비 확인...`)
+    //     res.json({ message: "ok", data: result });
+    // });
+    // Post successful: response:  {"jsonrpc":"2.0","id":"1","result":30000000000}
+
+
     res.json({ message: "ok", data: result });
   } catch (err) {
     console.error(err);
@@ -245,12 +275,52 @@ router.get('/transfer', async (req, res, next) => {
     // 2. 지갑 세팅
     const sender = hmy.wallet.addByPrivateKey(decPrivateKey);
     console.log(sender);
+    //계정 밸런스
+    let balance = await hmy.blockchain.getBalance({address: myData.address});
+    let result = fromWei(hexToNumber(balance.result), Units.one);
+    console.log('밸런스 in ONEs: ' + result);
 
 
-    res.json({ message: "ok", data: 'ok'});
+    // 3. 샤드 정보 세팅
+    // 크로스-샤드 트랜잭션 전송을 위해 sharding 세팅이 필요
+    const shardStruct = await hmy.blockchain.getShardingStructure();
+    hmy.shardingStructures(shardStruct.result);
+ 
+
+    //4. 전송 준비
+    // one1agthrfh3y7feg5gvrnz44a47tcvyj6gryjge2j
+    let valueInONE = hmy.utils.toWei(myData.amount, hmy.utils.Units.one);
+    const txn = hmy.transactions.newTx({
+      to: myData.addressTo,             //  token send to
+      value: String(valueInONE),
+      //value: '10000',
+      gasLimit: String(myData.gasLimit),
+      //gasLimit: '210000',
+      shardID: Number(myData.shard),            // send token from shardID
+      toShardID: Number(myData.toShard),
+      gasPrice: new hmy.utils.Unit(String(myData.gasPrice)).asGwei().toWei(),
+      //gasPrice: new hmy.utils.Unit('100').asGwei().toWei(),
+    });
+    console.log('====== 트랜잭션 준비 ======')
+    console.log(txn);
+    
+    // 5. 트랜잭션 서명
+    const signedTxn = await hmy.wallet.signTransaction(txn);
+
+    // 6. 트랜잭션 발송(send)
+    const [sentTxn, txnHash] = await signedTxn.sendTransaction();
+    console.log('====== 트랜잭션 hash ======')
+    console.log(txnHash);   //transaction failed:transaction underpriced 발생할 수 있다
+    //Transaction Fee   0.01938438 ONE
+    //Gas Used          646146
+    //Gas Price         0.00000003 ONE
+
+
+
+    res.json({ message: "ok", data: `전송 완료 : ${txnHash}`});
   } catch (err) {
     console.error(err);
-    res.json({ message: "ok", data: 'failed'});
+    res.json({ message: "ok", data: err.message});
   }
 });  
 

@@ -158,10 +158,19 @@ const getAccountInfo = async (account) => {
           //url: `http://localhost:4000/api/balance?address=${account}`, //통신할 페이지
           data: {} //인자로 보낼 데이터
         })
-        .then(result => {
-          result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
+        .then(resultOfInit => {
+          result = Number(resultOfInit.data.data.balance).toLocaleString('ko-KR') + " ONE";
           document.getElementById('mainBalance').innerText = result;
           document.getElementById('transfer-balance').innerText = `전송 가능 수량: ${result}`;
+        
+          //가스비 업데이트
+          // let gasPrice = Number(resultOfInit.data.data.gasPrice);
+          // let gasLimit = document.getElementById('transfer-gas-limit').value;
+          // let fee = Number(gasLimit) * Number(gasPrice) * 1e-9;
+          // fee = String(fee).slice(0,9);
+          // fee = Number(fee);
+          // document.getElementById('transfer-gas-fee').value = fee;
+          // document.getElementById('transfer-gas-price').value = gasPrice;
         })
       });
     });
@@ -405,21 +414,21 @@ document.getElementById('button-transfer-commit').onclick = async function () {
 
               //선택되어 있는 주소와 같은 instance인지 확인
               chrome.storage.sync.get('accountSelected', function(targetAddr) {
-                  targetAddr = targetAddr.accountSelected;
-                  data.address = targetAddr;
-                  if(publicKey == targetAddr) {
-                    data.encPrivateKey = encPrivateKey;
-                    axios({
-                      method: 'GET', //통신 방식
-                      url: `http://localhost:4000/api/transfer?data=${JSON.stringify(data)}`, //통신할 페이지
-                      data: {} //인자로 보낼 데이터
-                    })
-                    .then(res => {
-                      let output = res.data.data;
-                      alert(output);
-                      //refreshPage();
-                    })
-                  }
+                targetAddr = targetAddr.accountSelected;
+                data.address = targetAddr;
+                if(publicKey == targetAddr) {
+                  data.encPrivateKey = encPrivateKey;
+                  axios({
+                    method: 'GET', //통신 방식
+                    url: `http://localhost:4000/api/transfer?data=${JSON.stringify(data)}`, //통신할 페이지
+                    data: {} //인자로 보낼 데이터
+                  })
+                  .then(res => {
+                    let output = res.data.data;
+                    alert(output);
+                    refreshPage();
+                  })
+                }
               });
             }
           });
