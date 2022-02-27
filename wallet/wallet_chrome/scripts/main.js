@@ -35,7 +35,7 @@ const createAccount = async () => {
             data: {} //인자로 보낼 데이터
           })
           .then(response=>{
-            document.getElementById('account-list').innerText= JSON.stringify(response.data.data);
+            //document.getElementById('account-list').innerText= JSON.stringify(response.data.data);
             
             // 브라우저에 니모닉 저장
             result.account.push(response.data.data);
@@ -77,6 +77,7 @@ const showDiv = (id) => {
 hideDiv("menu");
 hideDiv("step-password");
 hideDiv("step-private-key");
+hideDiv("step-transfer");
 
 /*
  * 버튼에 따른 화면 전개
@@ -160,6 +161,7 @@ const getAccountInfo = async (account) => {
         .then(result => {
           result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
           document.getElementById('mainBalance').innerText = result;
+          document.getElementById('transfer-balance').innerText = `전송 가능 수량: ${result}`;
         })
       });
     });
@@ -331,6 +333,58 @@ document.getElementById('network-select').onchange = async function () {
     //밸런스 갱신
     refreshPage();
   });
+}
+
+//전송을 위한 입력 창
+document.getElementById('button-transfer').onclick = async function () {
+  hideDiv("menu");
+  hideDiv("step-main");
+  showDiv("step-transfer");
+}
+
+//전송 화면 '취소' 버튼
+document.getElementById('button-transfer-cancel').onclick = async function () {
+  refreshPage();
+}
+
+//gas price 변경 시
+document.getElementById('transfer-gas-price').onchange = async function () {
+  if((typeof Number(this.value)) == 'number') {
+    //숫자라면
+    let gasLimit = document.getElementById('transfer-gas-limit').value;
+    if((typeof Number(gasLimit)) == 'number') {
+      //0.000025 
+      let fee = Number(this.value) * Number(gasLimit) * 1e-9;
+      fee = String(fee).slice(0,9);
+      fee = Number(fee);
+      document.getElementById('transfer-gas-fee').value = fee;
+    }
+  }
+}
+
+//gas limit 변경 시
+document.getElementById('transfer-gas-limit').onchange = async function () {
+  if((typeof Number(this.value)) == 'number') {
+    //숫자라면
+    let gasPrice = document.getElementById('transfer-gas-price').value;
+    if((typeof Number(gasPrice)) == 'number') {
+      //0.000025 
+      let fee = Number(this.value) * Number(gasPrice) * 1e-9;
+      fee = String(fee).slice(0,9);
+      fee = Number(fee);
+      document.getElementById('transfer-gas-fee').value = fee;
+    }
+  }
+}
+
+//전송 화면 '전송' 버튼
+document.getElementById('button-transfer-commit').onclick = async function () {
+  iAddressTo = document.getElementById('transfer-to').value;
+  iShard = document.getElementById('transfer-shard').value;
+  iAmount = document.getElementById('transfer-amount').value;
+  alert(`주소 : ${iAddressTo},  샤드: ${iShard}`);
+
+  //전송하려면 공개키, 개인키가 필요 => address & password & encPrivate 필요
 }
 
 

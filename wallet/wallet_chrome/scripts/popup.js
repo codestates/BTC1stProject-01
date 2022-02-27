@@ -119,7 +119,7 @@ document.getElementById('button-login').onclick = async function () {
       chrome.storage.sync.set({'password': pwd}, function(result) {
         //저장된 패스워드 확인
         chrome.storage.sync.get('password', function(result) {
-          document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
+          //document.getElementById('password-sync').innerText= '임시 저장 패스워드 ' + result.password;
           window.location.href = "/pages/main.html";
         });
       });

@@ -27,7 +27,6 @@
     <!-- 메뉴 기능 -->
     <center id="menu" style="position:absolute;width:100%;">
       <div class="modal-dialog modal-dialog-centered">
-        <!-- <div style="height:30em;" class="modal-content"> -->
         <div class="modal-content">
           <div class="modal-header">
             <button id="menu-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -36,7 +35,6 @@
           </div>
           <div style="word-wrap:break-word;" id="menu-account-list" class="modal-body">
             <h5 style="text-align:left">내 계정 선택</h5>
-            <!-- <div style="margin-top:0.1em;width:100%" class="btn btn-light">oneuxa...qydd</div> -->
           </div>
           <div style="background-color:#eee" class="modal-body">
             <h5 style="text-align:left">기능</h5>
@@ -76,7 +74,7 @@
     </div>
 
     <!-- 활동 내역 -->
-    <div style="margin-top:3em;background-color:#eee" class="modal-body">
+    <div style="margin-top:3em;">
       <div style="margin-top:0.1em;width:100%" class="btn btn-light">거래 내역1</div>
       <div style="margin-top:0.1em;width:100%" class="btn btn-light">거래 내역1</div>
       <div style="margin-top:0.1em;width:100%" class="btn btn-light">거래 내역1</div>
@@ -117,6 +115,81 @@
         </center>
       </div>
     </div>
+
+
+    <!-- 스텝. 전송 -->
+    <div id="step-transfer">
+      <center style="margin:1em 1em;padding:1em 0.4em">
+        <h4>전송 (코인 보내기)</h4>
+        <div style="margin-top:2em;height:5em;">
+          <div style="float:left;width:70%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">받는 주소</p>
+            <input style="width:100%" type="text" id="transfer-to"/>
+          </div>
+          <div style="float:left;width:5%">
+          &nbsp;</div>
+          <div style="float:left;width:25%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">To Shard</p>
+            <select id="transfer-shard" style="width:100%;height:1.9em;" class="form-select" aria-label="Default select example">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="height:6em;">
+          <div style="float:left;width:70%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Amount</p>
+            <input style="width:100%" type="text" id="transfer-amount"/>
+          </div>
+          <div style="float:left;width:5%">
+          &nbsp;</div>
+          <div style="float:left;width:25%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Token</p>
+            <select style="width:100%;height:1.9em;" class="form-select" aria-label="Default select example" disabled>
+              <option value="ONE">ONE</option>
+            </select>
+          </div>
+          <p id="transfer-balance" style="color:red;text-align:left;font-size:0.9em;margin-bottom:-0.1em"></p>
+        </div>
+        
+        <div style="height:5em;">
+          <div style="float:left;width:25%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Gas Price</p>
+            <input style="width:100%" type="text" id="transfer-gas-price" value="1"/>
+          </div>
+          <div style="float:left;width:5%">
+          &nbsp;</div>
+          <div style="float:left;width:25%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Gas Limit</p>
+            <input style="width:100%" type="text" id="transfer-gas-limit" value="25000"/>
+          </div>
+          <div style="float:left;width:5%">
+          &nbsp;</div>
+          <div style="float:left;width:40%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Fee (ONE)</p>
+            <input style="width:100%" type="text" id="transfer-gas-fee" value="0.000025" disabled/>
+          </div>
+        </div>
+
+        <!-- <div style="height:3em;">
+          <div style="float:left;width:100%">
+            <p style="text-align:left;font-size:0.9em;margin-bottom:-0.1em">Input 데이터 (optional)</p>
+            <textarea style="width:100%" type="text" id="transfer-input" class="form-control" rows="2"></textarea>
+          </div>
+        </div> -->
+
+        <div style="margin-top:2em">
+          <button style="width:30%" class="btn btn-default" id="button-transfer-cancel">취소</button>
+          <button style="width:30%" class="btn btn-danger" id="button-transfer-commit">전송</button>
+        </div>
+      </center>
+    </div>
+
+
+
 
 
     <!-- <div style="margin-bottom:6em;word-wrap:break-word;">
