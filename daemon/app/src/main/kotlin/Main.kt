@@ -3,6 +3,9 @@ import entity.JsonRpcResponse
 
 fun main(args: Array<String>) {
     val shardName = System.getProperty("targetShard") ?: throw RuntimeException("targetShard cannot be null")
+    val fetchSize = System.getProperty("fetchSize")?.let {
+        it.toLong()
+    } ?: 1000
 //    val shardName = "SHARD_00"
     val now =  System.currentTimeMillis()
 
@@ -12,14 +15,20 @@ fun main(args: Array<String>) {
 
     val blockRepository = BlockRepository(targetShard)
     val transactionRepository = TransactionRepository()
-    val metaRepository = BlockMetaRepository()
+    val metaRepository = BlockMetaRepository(targetShard)
 
+    val blockMeta = metaRepository.getBlockMeta()
+    if (blockMeta.isRunning == true) {
+        println("A daemon for this shard[$targetShard] is already running. Daemon will be terminated")
+        return
+    }
 
-    val blockMeta = metaRepository.getBlockMeta(targetShard)
+    blockMeta.isRunning = true
+    metaRepository.update(blockMeta)
 
     print("Daemon is running at $now, lastUpdatedAt: ${blockMeta.lastUpdatedAt}, lastBlockNumber:${blockMeta.lastBlockNumber}")
 
-    val blocks: JsonRpcResponse<List<HarmonyBlock>>? = harmonyService.getBlocks(blockMeta.lastBlockNumber!!, blockMeta.lastBlockNumber!! + 1000)
+    val blocks: JsonRpcResponse<List<HarmonyBlock>>? = harmonyService.getBlocks(blockMeta.lastBlockNumber!!, blockMeta.lastBlockNumber!! + fetchSize)
     blocks?.result?.forEach {
         val blockSaved = blockRepository.save(it)
         if(!blockSaved) throw RuntimeException("Failed to persist block[${it.number}")
@@ -35,7 +44,8 @@ fun main(args: Array<String>) {
 
     blockMeta.lastUpdatedAt = now
     blockMeta.lastBlockNumber = blocks!!.result!!.last().number
+    blockMeta.isRunning = false
 
-    metaRepository.update(blockMeta, targetShard)
+    metaRepository.update(blockMeta)
 
 }

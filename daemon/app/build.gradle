@@ -15,9 +15,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-//    implementation group: 'io.projectreactor.netty', name: 'reactor-netty', version: '1.0.16'
-    // https://mvnrepository.com/artifact/one.harmony/harmonyj
     implementation 'one.harmony:harmonyj:1.0.23'
     implementation 'org.springframework:spring-web:4.3.3.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.16'
@@ -44,4 +41,23 @@ compileTestKotlin {
 
 application {
     mainClassName = 'MainKt'
+}
+
+task fatJar(type: Jar) {
+    baseName 'btc01-daemon'
+
+    manifest {
+        attributes "Main-Class": "MainKt"
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    with jar
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+
 }
