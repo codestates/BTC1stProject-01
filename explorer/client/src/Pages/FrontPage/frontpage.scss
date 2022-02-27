@@ -10,7 +10,8 @@
     top: -1.3rem;
     left: 0px;
     right: 0px;
-    bottom: -18px;
+    height: 100vh;
+    background-position: center;
   }
 }
 
@@ -195,6 +196,10 @@
   padding: 0.2rem 0.4rem;
   color: gray;
   font-weight: 400;
+}
+
+#root > div.main > div.main_set > div.Last_Blocks > div.title_block > div > div {
+  transform: translate(0px, 32px) !important;
 }
 
 @-webkit-keyframes spinner-border {

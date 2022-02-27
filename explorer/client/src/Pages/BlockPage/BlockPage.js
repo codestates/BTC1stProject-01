@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Blockpage.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -136,6 +137,7 @@ function Dnwpage() {
       <div className="main_middle_set">
         <div className="main_box_name set_flex">
           <div className="info_title">⛓️ Block #{number}</div>
+          <div>👨‍👨‍👦‍👦</div>
           <div>
             {" "}
             <DropdownButton id="dropdown-basic-button" title={shard}>
@@ -557,29 +559,45 @@ function Dnwpage() {
                   {" "}
                   {now_shard === 0 && block.length !== 0
                     ? block[0][0].transactions.length > 0
-                      ? block[0][0].transactions.map((el) => {
-                          return <div>{el.hash}</div>;
+                      ? block[0][0].transactions.map((el, index) => {
+                          return (
+                            <Link key={index} to={`/transaction/${el.hash}`} className="upColor">
+                              <div>{el.hash}</div>
+                            </Link>
+                          );
                         })
                       : null
                     : null}
                   {now_shard === 1 && block.length !== 0
                     ? block[1][0].transactions.length > 0
-                      ? block[1][0].transactions.map((el) => {
-                          return <div>{el.hash}</div>;
+                      ? block[1][0].transactions.map((el, index) => {
+                          return (
+                            <Link key={index} to={`/transaction/${el.hash}`} className="upColor">
+                              <div>{el.hash}</div>
+                            </Link>
+                          );
                         })
                       : null
                     : null}
                   {now_shard === 2 && block.length !== 0
                     ? block[2][0].transactions.length > 0
-                      ? block[2][0].transactions.map((el) => {
-                          return <div>{el.hash}</div>;
+                      ? block[2][0].transactions.map((el, index) => {
+                          return (
+                            <Link key={index} to={`/transaction/${el.hash}`} className="upColor">
+                              <div>{el.hash}</div>
+                            </Link>
+                          );
                         })
                       : null
                     : null}
                   {now_shard === 3 && block.length !== 0
                     ? block[3][0].transactions.length > 0
-                      ? block[3][0].transactions.map((el) => {
-                          return <div>{el.hash}</div>;
+                      ? block[3][0].transactions.map((el, index) => {
+                          return (
+                            <Link key={index} to={`/transaction/${el.hash}`} className="upColor">
+                              <div>{el.hash}</div>
+                            </Link>
+                          );
                         })
                       : null
                     : null}

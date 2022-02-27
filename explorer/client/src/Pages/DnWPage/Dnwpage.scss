@@ -115,11 +115,12 @@
   text-align: end;
 }
 
-#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(2) > div.dropdown > button {
+#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(3) > div.dropdown > button {
   color: #55626d;
+  border-bottom: 1px solid #55626d !important;
 }
 
-#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(2) > div > div {
+#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(3) > div > div {
   min-width: 6rem;
   & > a {
     width: 67.2%;
