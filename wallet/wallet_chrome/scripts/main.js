@@ -140,22 +140,28 @@ const getAccountInfo = async (account) => {
     // console.log(data);
     // alert(JSON.stringify(data));
 
-    chrome.storage.sync.get('currentShard', function(myShard) {
-      myShard = myShard.currentShard;
-      if(!myShard) {
-        myShard = 0;
+    chrome.storage.sync.get('currentNetwork', function(myNetwork) {
+      myNetwork = myNetwork.currentNetwork;
+      if(!myNetwork) {
+        myNetwork = 'testnet';
       }
-      //밸런스 확인
-      axios({
-        method: 'GET', //통신 방식
-        url: `http://localhost:4000/api/balance?address=${account}&shard=${myShard}`, //통신할 페이지
-        //url: `http://localhost:4000/api/balance?address=${account}`, //통신할 페이지
-        data: {} //인자로 보낼 데이터
-      })
-      .then(result => {
-        result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
-        document.getElementById('mainBalance').innerText = result;
-      })
+      chrome.storage.sync.get('currentShard', function(myShard) {
+        myShard = myShard.currentShard;
+        if(!myShard) {
+          myShard = 0;
+        }
+        //밸런스 확인
+        axios({
+          method: 'GET', //통신 방식
+          url: `http://localhost:4000/api/balance?address=${account}&shard=${myShard}&network=${myNetwork}`, //통신할 페이지
+          //url: `http://localhost:4000/api/balance?address=${account}`, //통신할 페이지
+          data: {} //인자로 보낼 데이터
+        })
+        .then(result => {
+          result = Number(result.data.data).toLocaleString('ko-KR') + " ONE";
+          document.getElementById('mainBalance').innerText = result;
+        })
+      });
     });
   } catch(e) {
     alert(e);
@@ -242,6 +248,15 @@ chrome.storage.local.get('account', function(result) {
     chrome.storage.sync.get('currentShard', function(selected) {
       document.getElementById('shard-select').getElementsByTagName('option')[selected.currentShard].selected = 'selected'
     })
+
+    //네트워크 정보 확인
+    chrome.storage.sync.get('currentNetwork', function(selected) {
+      let idx = 0;
+      if(selected.currentNetwork == 'mainnet') {
+        idx = 1;
+      }
+      document.getElementById('network-select').getElementsByTagName('option')[idx].selected = 'selected'
+    })
   }
 });
 
@@ -303,8 +318,16 @@ document.getElementById('button-password').onclick = async function () {
 document.getElementById('shard-select').onchange = async function () {
   //let selectValue = this.options[this.selectedIndex].value;  
   let selectValue = this.selectedIndex;
-  alert('샤드 변경 ' + selectValue);
   chrome.storage.sync.set({'currentShard':selectValue}, function(result) {
+    //밸런스 갱신
+    refreshPage();
+  });
+}
+
+//네트워크 변경
+document.getElementById('network-select').onchange = async function () {
+  let selectValue = this.options[this.selectedIndex].value;  
+  chrome.storage.sync.set({'currentNetwork':selectValue}, function(result) {
     //밸런스 갱신
     refreshPage();
   });

@@ -129,17 +129,27 @@ router.get('/newaccount', async (req, res, next) => {
 router.get('/balance', async (req, res, next) => {
   console.log('======== 밸런스 조회 =========')
   try {
-    let myAddress, myShard;
+    let myAddress, myShard, myNetwork;
     if(req.query.address) {
       myAddress = req.query.address;
       myShard = req.query.shard;
+      myNetwork = req.query.network;
     }
-    console.log(`샤드 번호 :  ${myShard}`)
+    console.log(`샤드번호 :  ${myShard}`);
+    console.log(`네트워크 :  ${myNetwork}`);
 
+    let networkType;
+    if(myNetwork == 'mainnet') {
+      networkType = 't';
+    } else {
+      networkType = 'b';
+    }
+    
     //만약 샤드 정보가 변경되었다면 hmy 객체 변경
-    myShard = `https://api.s${myShard}.b.hmny.io/`;
-    if(shardURL != myShard) {
-      shardURL = myShard;
+    let myEndpoint = `https://api.s${myShard}.${networkType}.hmny.io/`;
+    console.log(`엔드포인트 : ${myEndpoint}`)
+    if(shardURL != myEndpoint) {
+      shardURL = myEndpoint;
       hmy = new Harmony(
         shardURL,
         {
