@@ -6,6 +6,9 @@ import entity.HarmonyBlock
 import entity.HarmonyTransaction
 import entity.JsonRpcRequest
 import entity.JsonRpcResponse
+import io.github.resilience4j.retry.Retry
+import io.github.resilience4j.retry.RetryConfig
+import io.github.resilience4j.retry.RetryRegistry
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -13,6 +16,7 @@ import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import java.net.URI
+import java.time.Duration
 
 
 class HarmonyService(
@@ -21,6 +25,17 @@ class HarmonyService(
 
     companion object {
         val restTemplate = RestTemplate()
+        val config = createRetryConfig()
+        val registry = RetryRegistry.of(config)
+        val retry: Retry = registry.retry("harmonyService-retry")
+
+        private fun createRetryConfig(): RetryConfig {
+            return RetryConfig.custom<Any>()
+                .maxAttempts(3)
+                .waitDuration(Duration.ofMillis(100))
+                .retryExceptions(NullPointerException::class.java)
+                .build()
+        }
     }
 
     fun getBlocks(
@@ -45,12 +60,14 @@ class HarmonyService(
             .body(param)
 
 
-        val responseEntity: ResponseEntity<JsonRpcResponse<List<HarmonyBlock>>>? = restTemplate.exchange(
-            requestEntity,
-            object: ParameterizedTypeReference<JsonRpcResponse<List<HarmonyBlock>>>() {})
+        val executeCallable: ResponseEntity<JsonRpcResponse<List<HarmonyBlock>>> = retry.executeCallable {
+            restTemplate.exchange(
+                requestEntity,
+                object : ParameterizedTypeReference<JsonRpcResponse<List<HarmonyBlock>>>() {})
+        }
 
-        return if (responseEntity?.statusCode == HttpStatus.OK) {
-            responseEntity.body
+        return if (executeCallable.statusCode == HttpStatus.OK) {
+            executeCallable.body
         } else {
             null
         }
@@ -93,9 +110,11 @@ class HarmonyService(
             .body(param)
 
 
-        val responseEntity: ResponseEntity<JsonRpcResponse<HarmonyTransaction>>? = restTemplate.exchange(
-            requestEntity,
-            object: ParameterizedTypeReference<JsonRpcResponse<HarmonyTransaction>>() {})
+        val responseEntity = retry.executeCallable {
+            restTemplate.exchange(
+                requestEntity,
+                object : ParameterizedTypeReference<JsonRpcResponse<HarmonyTransaction>>() {})
+        }
 
         return if (responseEntity?.statusCode == HttpStatus.OK) {
             responseEntity.body

@@ -6,6 +6,10 @@ plugins {
 group = 'me.minu94'
 version = '1.0-SNAPSHOT'
 
+ext {
+    resilience4jVersion = '1.6.0'
+}
+
 repositories {
     mavenCentral()
 }
@@ -19,6 +23,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.16'
 
     implementation 'org.litote.kmongo:kmongo:4.5.0'
+
+    implementation "io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion"
+    // also have a dependency on the core module(s) needed - for example, retry:
+    implementation "io.github.resilience4j:resilience4j-retry:$resilience4jVersion"
 
 }
 
