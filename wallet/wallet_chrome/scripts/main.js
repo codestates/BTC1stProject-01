@@ -221,7 +221,9 @@ const getActivityInfo = async (account) => {
     
             //클릭 이벤트
             div.addEventListener('click', function(){
-              alert('새창 띄워주야 된다 ' + this.name);
+              //alert('새창 띄워주야 된다 ' + this.name);
+              //window.open(`https://explorer.pops.one/tx/${this.name}`);
+              window.open(`http://localhost:3001/transaction/${this.name}`);
             });
             
             //데이터 적재
@@ -530,9 +532,14 @@ document.getElementById('button-transfer-commit').onclick = async function () {
   } catch(e) {
     alert(e);
   }
+}
 
-  
-  //전송하려면 공개키, 개인키가 필요 => address & password & encPrivate 필요
+//블록탐색기에서 조회 버튼
+document.getElementById('explorer-account').onclick = async function () {
+  chrome.storage.sync.get('accountSelected', function(result) {
+    //window.open(`https://explorer.pops.one/address/${result.accountSelected}`);
+    window.open(`http://localhost:3000/dnw/${result.accountSelected}`);          
+  });
 }
 
 
