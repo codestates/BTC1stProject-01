@@ -138,23 +138,26 @@ router.get('/balance', async (req, res, next) => {
     console.log(`샤드번호 :  ${myShard}`);
     console.log(`네트워크 :  ${myNetwork}`);
 
-    let networkType;
+    let networkType, myChainId;
     if(myNetwork == 'mainnet') {
       networkType = 't';
+      myChainId = ChainID.HmyMainnet;
     } else {
       networkType = 'b';
+      myChainId = ChainID.HmyTestnet;
     }
     
     //만약 샤드 정보가 변경되었다면 hmy 객체 변경
     let myEndpoint = `https://api.s${myShard}.${networkType}.hmny.io/`;
     console.log(`엔드포인트 : ${myEndpoint}`)
+    console.log(`체인ID : ${myChainId}`)
     if(shardURL != myEndpoint) {
       shardURL = myEndpoint;
       hmy = new Harmony(
         shardURL,
         {
             chainType: ChainType.Harmony,
-            chainId: ChainID.HmyTestnet,
+            chainId: myChainId
         },
       );
     }
@@ -183,7 +186,7 @@ router.get('/privateKey', async (req, res, next) => {
       myPwd = req.query.pwd;
     }
 
-    //니모닉 코드 복호화
+    //개인키 복호화
     let decPrivateKey = await decryptPhrase(JSON.parse(myEncData), myPwd);
     console.log(decPrivateKey);
     
@@ -206,6 +209,42 @@ router.get('/transfer', async (req, res, next) => {
     }
 
     console.log(myData);
+
+    //개인키 복호화
+    let decPrivateKey = await decryptPhrase(JSON.parse(myData.encPrivateKey), myData.pwd);
+    console.log(`개인키: ${decPrivateKey}`);
+
+    /*
+    * 전송 프로세스
+    */
+    // 1. 네트워크 세팅
+    let networkType, myChainId;
+    if(myData.network == 'mainnet') {
+      networkType = 't';
+      myChainId = ChainID.HmyMainnet;
+    } else {
+      networkType = 'b';
+      myChainId = ChainID.HmyTestnet;
+    }
+    
+    //만약 샤드 정보가 변경되었다면 hmy 객체 변경
+    let myEndpoint = `https://api.s${myData.shard}.${networkType}.hmny.io/`;
+    console.log(`엔드포인트 : ${myEndpoint}`)
+    console.log(`체인ID : ${myChainId}`)
+    if(shardURL != myEndpoint) {
+      shardURL = myEndpoint;
+      hmy = new Harmony(
+        shardURL,
+        {
+            chainType: ChainType.Harmony,
+            chainId: myChainId
+        },
+      );
+    }
+
+    // 2. 지갑 세팅
+    const sender = hmy.wallet.addByPrivateKey(decPrivateKey);
+    console.log(sender);
 
 
     res.json({ message: "ok", data: 'ok'});
