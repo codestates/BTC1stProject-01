@@ -1,1 +1,36 @@
 /wallet/wallet_server/node_modules
+
+### Kotlin ###
+# Compiled class file
+/daemon/app/*.class
+
+# Log file
+/daemon/app/*.log
+
+# Package Files #
+/daemon/app/*.jar
+/daemon/app/*.war
+/daemon/app/*.nar
+/daemon/app/*.ear
+/daemon/app/*.zip
+/daemon/app/*.tar.gz
+/daemon/app/*.rar
+
+
+### Gradle ###
+/daemon/app/.gradle
+**/build/
+!src/**/build/
+
+# Ignore Gradle GUI config
+/daemon/app/gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+daemon/app/.idea/
+
+daemon/app/src/main/resources/META-INF/

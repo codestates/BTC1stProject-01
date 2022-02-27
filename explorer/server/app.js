@@ -10,10 +10,10 @@ var env = process.env;
 dotenv.config();
 
 mongoose
-  .connect(`mongodb+srv://NMM:${env.DB_PASSWORD}@cluster0.qzh54.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+  .connect(`mongodb+srv://NMM:${env.DB_PASSWORD}@cluster0.qzh54.mongodb.net/harmony-testnet?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
+  }) //몽고디비접속
   .then(() => {
     app.listen(app.get("port"), () => {
       console.log(`app is listening in http://localhost:${app.get("port")}`);
@@ -23,6 +23,7 @@ mongoose
 
 var app = express();
 var indexRouter = require("./routes/index");
+var SearchRouter = require("./routes/search");
 const port = 3001;
 
 // view engine setup
@@ -36,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use("/", indexRouter);
+app.use("/search", SearchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,38 +1,177 @@
 var express = require("express");
 var router = express.Router();
-const Blocks = require("../models/Blocks");
+const Block_00 = require("../models/Block_00");
+const Block_01 = require("../models/Block_01");
+const Block_02 = require("../models/Block_02");
+const Block_03 = require("../models/Block_03");
+const Transaction = require("../models/Transaction");
 
 router.get("/", function (req, res) {
   res.status(200).send("welcome");
 });
 
-router.get("/getblocks", async function (req, res) {
-  const block = new Blocks({
-    number: 21891000,
-    viewID: 21896536,
-    epoch: 75333,
-    hash: "0xeb4ffcfca90386fb179bf99b45421c4c0eb10ea58aafcae15d6164be67fd2e8e",
-    parentHash: "0x7e517ff7e4c987390a97048b3b9f986f0a002492d8e7d966b58d1433b3d2062c",
-    nonce: 0,
-    mixHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
-    logsBloom:
-      "0x00020000000000000000010000000000000000000000000000000000000400000000100000000000000000000000000000000000000200000000000000000000000000000000000000000001002000000000000001000000000000000000000000000000024000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000480000000000000000000000000000000001008000000000000000000000000000000000000000000000000000000000000220000002000000000000000004000000000000000000000000020000000000000000000000000000000000000000040000000000000000000000000",
-    stateRoot: "0xf6592bfb27311e7231233b1b4d8d5dd4e208b44fb0e9812dbd3772f2492b1f90",
-    miner: "one1yc06ghr2p8xnl2380kpfayweguuhxdtupkhqzw",
-    difficulty: 0,
-    extraData: "0x",
-    size: 1969,
-    gasLimit: 80000000,
-    gasUsed: 185329,
-    timeStamp: 1645714516,
-    transactionsToor: "0x2dc7b6cd220280406a2cca39ee523049712407642750b78c843707fd361e85ec",
-    receiptsRoot: "0xa1b34588c444a6bfdc353e4d727ecc834c427238fbc1ecc3befe933b723efe8b",
-    uncles: [],
-    transactions: ["0x04cbd88b73ec5f572b0e56d44edeec1ba21d808da877950bb2a7107c8d49c192"],
-    stakingTransactions: [],
-  });
-  await block.save();
-  res.status(200).send("새로운 블록 DB생성 생성");
+router.get("/callblocks/shard", async function (req, res) {
+  //샤드별 모든 블록정보를 검색한다.
+  let shard_type_result = [[], [], [], []];
+  await Block_00.find() //샤드0에 쌓인 블럭 조회
+    .sort({ timestamp: -1 }) //가장 최근에 저장된 데이터 중 타임스탬프 순으로
+    .limit(11) //11개만 가져온다.
+    .then((result) => {
+      for (var block of result) {
+        let date = new Date(block.timestamp * 1000);
+        shard_type_result[0].push({
+          //임시 변수에 저장
+          shard: block.shardID,
+          height: block.number,
+          transaction: block.transactions.length,
+          timestamp:
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ", " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            ":" +
+            date.getSeconds(),
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("shard0 loadData error"); //실패
+      shard_type_result[0].push({});
+    });
+
+  await Block_01.find() //샤드1에 쌓인 블럭 조회
+    .sort({ timestamp: -1 }) //가장 최근에 저장된 데이터 중 타임스탬프 순으로
+    .limit(11) //11개만 가져온다.
+    .then((result) => {
+      for (var block of result) {
+        let date = new Date(block.timestamp * 1000);
+        shard_type_result[1].push({
+          shard: block.shardID,
+          height: block.number,
+          transaction: block.transactions.length,
+          timestamp:
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ", " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            ":" +
+            date.getSeconds(),
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("shard1 loadData error"); //실패
+      shard_type_result[1].push({});
+    });
+
+  await Block_02.find() //샤드2에 쌓인 블럭 조회
+    .sort({ timestamp: -1 }) //가장 최근에 저장된 데이터 중 타임스탬프 순으로
+    .limit(11) //11개만 가져온다.
+    .then((result) => {
+      for (var block of result) {
+        let date = new Date(block.timestamp * 1000);
+        shard_type_result[2].push({
+          shard: block.shardID,
+          height: block.number,
+          transaction: block.transactions.length,
+          timestamp:
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ", " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            ":" +
+            date.getSeconds(),
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("shard2 loadData error");
+      shard_type_result[2].push({}); //실패시 응답
+    });
+
+  await Block_03.find() //샤드3에 쌓인 블럭 조회
+    .sort({ timestamp: -1 }) //가장 최근에 저장된 데이터 중 타임스탬프 순으로
+    .limit(11) //11개만 가져온다.
+    .then((result) => {
+      for (var block of result) {
+        let date = new Date(block.timestamp * 1000);
+        shard_type_result[3].push({
+          shard: block.shardID,
+          height: block.number,
+          transaction: block.transactions.length,
+          timestamp:
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ", " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            ":" +
+            date.getSeconds(),
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("shard3 loadData error");
+      shard_type_result[3].push({}); //실패
+    });
+
+  await res.status(200).send({ data: shard_type_result }); //적재 완료한 임시변수를 응답
+});
+
+router.get("/calltransaction", async function (req, res) {
+  Transaction.find() //샤드구분없이 모든 최신 트랜잭션을 가져온다.
+    .sort({ timestamp: -1 }) //가장 최근에 저장된 데이터 중 타임스탬프 순으로
+    .limit(11) //11개만 가져온다.
+    .then((result) => {
+      let returnResult = [];
+      for (var tx of result) {
+        let date = new Date(tx.timestamp * 1000);
+        returnResult.push({
+          //임시변수에 적재
+          shard: `${tx.shardID}➡${tx.toShardID}`,
+          hash: tx.hash,
+          from: tx.from,
+          to: tx.to,
+          timestamp:
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ", " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            ":" +
+            date.getSeconds(),
+        });
+      }
+
+      res.status(201).send({ data: returnResult }); //임시변수를 응답
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(401).send({ result: err, message: "Fail load blockData" }); //실패
+    });
 });
 
 module.exports = router;
