@@ -1,0 +1,39 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'application'
+}
+
+group = 'me.minu94'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+//    implementation group: 'io.projectreactor.netty', name: 'reactor-netty', version: '1.0.16'
+    // https://mvnrepository.com/artifact/one.harmony/harmonyj
+    implementation 'one.harmony:harmonyj:1.0.23'
+    implementation 'org.springframework:spring-web:4.3.3.RELEASE'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+
+    implementation 'org.litote.kmongo:kmongo:4.5.0'
+
+}
+
+test {
+    useJUnit()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+application {
+    mainClassName = 'MainKt'
+}
