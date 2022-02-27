@@ -194,4 +194,25 @@ router.get('/privateKey', async (req, res, next) => {
 });         
 
 
+/*
+ *  /api/transfer?data=${data}
+ */
+router.get('/transfer', async (req, res, next) => {
+  console.log('======== 코인 전송 =========')
+  try {
+    let myData;
+    if(req.query) {
+      myData = JSON.parse(req.query.data);
+    }
+
+    console.log(myData);
+
+
+    res.json({ message: "ok", data: 'ok'});
+  } catch (err) {
+    console.error(err);
+    res.json({ message: "ok", data: 'failed'});
+  }
+});  
+
 module.exports = router;

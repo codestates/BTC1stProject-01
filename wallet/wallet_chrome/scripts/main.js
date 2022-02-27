@@ -348,7 +348,7 @@ document.getElementById('button-transfer-cancel').onclick = async function () {
 }
 
 //gas price 변경 시
-document.getElementById('transfer-gas-price').onchange = async function () {
+document.getElementById('transfer-gas-price').onkeyup = async function () {
   if((typeof Number(this.value)) == 'number') {
     //숫자라면
     let gasLimit = document.getElementById('transfer-gas-limit').value;
@@ -363,7 +363,7 @@ document.getElementById('transfer-gas-price').onchange = async function () {
 }
 
 //gas limit 변경 시
-document.getElementById('transfer-gas-limit').onchange = async function () {
+document.getElementById('transfer-gas-limit').onkeyup = async function () {
   if((typeof Number(this.value)) == 'number') {
     //숫자라면
     let gasPrice = document.getElementById('transfer-gas-price').value;
@@ -379,11 +379,52 @@ document.getElementById('transfer-gas-limit').onchange = async function () {
 
 //전송 화면 '전송' 버튼
 document.getElementById('button-transfer-commit').onclick = async function () {
-  iAddressTo = document.getElementById('transfer-to').value;
-  iShard = document.getElementById('transfer-shard').value;
-  iAmount = document.getElementById('transfer-amount').value;
-  alert(`주소 : ${iAddressTo},  샤드: ${iShard}`);
+  let data = {};
+  data.AddressTo = document.getElementById('transfer-to').value;
+  data.Shard = document.getElementById('transfer-shard').value;
+  data.Amount = document.getElementById('transfer-amount').value;
+  data.GasPrice = document.getElementById('transfer-gas-price').value;
+  data.GasLimit = document.getElementById('transfer-gas-limit').value;
+  data.GasFee = document.getElementById('transfer-gas-fee').value;
+  
+  try {
+    chrome.storage.sync.get('password', function(result) {
+      let pwd = result.password;
+      data.pwd = pwd;
 
+      chrome.storage.local.get('account', function(arrAccount) {
+        arrAccount = arrAccount.account;
+        //암호화된 개인키를 찾는다
+        for(let i=0;i<arrAccount.length;i++) {
+          let encPrivateKey = arrAccount[i].privateKey;
+          let publicKey = arrAccount[i].addressForONE;
+
+          //선택되어 있는 주소와 같은 instance인지 확인
+          chrome.storage.sync.get('accountSelected', function(targetAddr) {
+              targetAddr = targetAddr.accountSelected;
+              data.address = targetAddr;
+              if(publicKey == targetAddr) {
+                data.encPrivateKey = encPrivateKey;
+                axios({
+                  method: 'GET', //통신 방식
+                  url: `http://localhost:4000/api/transfer?data=${JSON.stringify(data)}`, //통신할 페이지
+                  data: {} //인자로 보낼 데이터
+                })
+                .then(res => {
+                  let output = res.data.data;
+                  alert(output);
+                  //refreshPage();
+                })
+              }
+          });
+        }
+      });
+    })
+  } catch(e) {
+    alert(e);
+  }
+
+  
   //전송하려면 공개키, 개인키가 필요 => address & password & encPrivate 필요
 }
 
