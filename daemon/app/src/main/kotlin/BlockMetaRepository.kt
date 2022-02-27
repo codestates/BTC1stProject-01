@@ -9,7 +9,7 @@ class BlockMetaRepository(private val shardInfo: ShardInfo) {
 
     companion object {
         private val MongoURL = "mongodb+srv://NMM:1234@cluster0.qzh54.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-        private val databaseName = "harmony-local"
+        private val databaseName = "harmony-testnet"
         val client = KMongo.createClient(MongoURL)
         val database= client.getDatabase(databaseName)
     }

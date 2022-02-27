@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
     val targetShard = ShardInfo.valueOf(shardName)
 
-    val harmonyService = HarmonyService(targetShard.mainNetUrl)
+    val harmonyService = HarmonyService(targetShard.testNetUrl)
 
     val blockRepository = BlockRepository(targetShard)
     val transactionRepository = TransactionRepository()
