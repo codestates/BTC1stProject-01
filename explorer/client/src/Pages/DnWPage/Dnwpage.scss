@@ -1,0 +1,111 @@
+.main2 {
+  position: relative;
+  &::before {
+    content: "";
+    background-image: url(https://media.discordapp.net/attachments/945264538171871275/946800367331594240/harmony_banner_blue.jpeg?width=1248&height=702);
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.175;
+    position: absolute;
+    top: -2.8rem;
+    left: 0px;
+    right: 0px;
+    min-height: 100vh;
+  }
+}
+
+.main_middle_set {
+  width: 60%;
+  height: 80%;
+
+  padding: 10px 10px;
+  margin: 45px auto 0 auto;
+  position: relative;
+  border-radius: 7px;
+}
+
+.main_box_name {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  font-family: Nunito;
+  color: rgb(85, 98, 109);
+}
+
+.main_box_name2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-bottom: 24px;
+  font-family: Nunito;
+  color: rgb(85, 98, 109);
+  border-bottom: 2px solid #2081e2a8;
+}
+
+.main_box1 {
+  border: 2px solid #2081e2a8;
+  padding: 0 15px 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 7px;
+}
+
+.box_flex {
+  display: flex;
+  border-bottom: 1px solid;
+  padding-bottom: 20px;
+  padding-top: 15px;
+}
+
+.title2 {
+  color: gray;
+  margin-right: 11rem;
+}
+
+.main_box2 {
+  color: gray;
+  padding: 11px 15px 10px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.9vw;
+}
+
+.dnw_Type {
+  flex-grow: 0.2;
+}
+
+.dnw_Hash {
+  flex-grow: 0.2;
+}
+
+.dnw_From,
+.dnw_To,
+.dnw_Value {
+  flex-grow: 0.2;
+}
+
+.common_set2 {
+  padding: 15px 0;
+  color: royalblue;
+  cursor: pointer;
+  border-bottom: 1px solid black;
+}
+
+.type_set {
+  padding: 15px 0;
+  border-bottom: 1px solid black;
+  color: orange;
+  font-weight: bold;
+}
+.value_set {
+  padding: 15px 0;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+}
+
+.timestamp_set {
+  padding: 15px 0;
+  border-bottom: 1px solid black;
+}
+
+.dnw_Timestamp {
+  text-align: end;
+}

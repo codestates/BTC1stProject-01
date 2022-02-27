@@ -1,0 +1,57 @@
+.main3 {
+  position: relative;
+  &::before {
+    content: "";
+    background-image: url(https://media.discordapp.net/attachments/945264538171871275/946800367331594240/harmony_banner_blue.jpeg?width=1248&height=702);
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.175;
+    position: absolute;
+    top: -2.8rem;
+    left: 0px;
+    right: 0px;
+    bottom: 0;
+    min-height: 100vh;
+    background-position: center;
+  }
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.title2.addwitdh {
+  width: 15rem;
+  margin-left: 0.8rem;
+}
+
+.main_box_name.set_flex {
+  display: flex;
+}
+
+.info_title {
+  flex-grow: 1;
+}
+
+#root > div.main3 > div > div.main_box_name.set_flex > div:nth-child(2) > div.dropdown > button {
+  color: #55626d;
+}
+
+#root > div.main3 > div > div.main_box_name.set_flex > div:nth-child(2) > div > div {
+  min-width: 6rem;
+  & > a {
+    width: 67.2%;
+    color: #55626d;
+  }
+}
+
+#root > div.main3 > div > div.main_box1 > div.lastBlock_spinner.spinner-border.text-primary {
+  width: 3.5rem;
+  height: 3.5rem;
+  top: 142%;
+}
+
+.pointer {
+  cursor: pointer;
+  color: royalblue;
+}

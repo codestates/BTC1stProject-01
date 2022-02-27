@@ -15,7 +15,7 @@
   align-items: center;
   margin-right: 12px;
   margin-left: auto;
-  width: 55%;
+  width: 45%;
 }
 
 .NavBarInisdeContainer {
@@ -37,6 +37,13 @@
   text-decoration: none;
   color: #2081e2cf;
 }
+
+.NMM_logo {
+  width: 46px;
+  padding-top: 8px;
+  margin-right: 4px;
+}
+
 .nav {
   display: flex;
   height: 100%;
@@ -334,22 +341,24 @@ a {
   white-space: nowrap;
   background-color: transparent;
   border: 0;
+  transition: 0.8s;
 }
 .dropdown-item:hover,
 .dropdown-item:focus {
   a.noneDeco {
     color: #fff;
-    transition: 0.3s;
+    transition: 0.8s;
   }
   color: #fff;
   background-color: #2081e2cf;
-  transition: 0.3s;
+  transition: 0.8s;
 }
 .dropdown-item.active,
 .dropdown-item:active {
   color: white;
   text-decoration: none;
   background-color: #0d6efd;
+  transition: 0.8s;
 }
 .dropdown-item.disabled,
 .dropdown-item:disabled {
@@ -422,6 +431,7 @@ a {
 .nav {
   &#DepositWithdraw:hover {
     text-decoration: underline 3px solid white;
+    // transition: 0.8s;
   }
   &.nav.dropdown:hover {
     text-decoration: underline 3px solid white;

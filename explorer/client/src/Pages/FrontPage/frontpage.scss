@@ -1,11 +1,28 @@
+.main {
+  position: relative;
+  &::before {
+    content: "";
+    background-image: url(https://media.discordapp.net/attachments/945264538171871275/946800367331594240/harmony_banner_blue.jpeg?width=1248&height=702);
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.175;
+    position: absolute;
+    top: -1.3rem;
+    left: 0px;
+    right: 0px;
+    bottom: -18px;
+  }
+}
 .searchBar {
-  width: 80%;
+  width: 58%;
   height: 10%;
-  border: 1px solid rgb(231, 236, 247);
+  border: 2px solid #2081e2a8;
   padding: 3px;
   margin: 20px auto;
   display: flex;
   align-items: center;
+  position: relative;
+  border-radius: 7px;
 }
 
 .searchIcon {
@@ -23,11 +40,247 @@
 .searchBlock {
   border: none;
   font-size: 18px;
-  width: 80%;
+  flex-grow: 1;
   height: 24px;
   color: inherit;
+  background-color: #d7f7f6;
+  border-radius: 7px;
 }
 .searchBlock:focus,
 .searchBlock:hover {
   outline: none;
+}
+
+.main_set {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.Last_Blocks {
+  border: 2px solid #2081e2a8;
+  min-width: 26.3%;
+  min-height: 76vh;
+  margin-right: 20px;
+  padding: 20px 18px;
+  position: relative;
+  border-radius: 7px;
+}
+.Last_Transactions {
+  border: 2px solid #2081e2a8;
+  min-width: 27%;
+  min-height: 76vh;
+  padding: 20px 18px;
+  border-radius: 7px;
+  position: relative;
+}
+
+.title {
+  padding-bottom: 10px;
+  border-bottom: 1px solid;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: rgb(85, 83, 83);
+}
+
+.title_block {
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 1px solid;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: rgb(85, 83, 83);
+}
+
+.block_category {
+  display: flex;
+  padding-top: 5px;
+  color: gray;
+  font-size: 0.9vw;
+}
+
+.Shard {
+  flex-grow: 0.2;
+}
+
+.Shard_set,
+.Height_set,
+.Transaction_set,
+.Timestamp_set {
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  font-size: 15px;
+}
+
+.Height {
+  flex-grow: 0.4;
+}
+
+.Common_set {
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  font-size: 15px;
+  color: royalblue;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.Height_set {
+  color: royalblue;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.Transactions {
+  flex-grow: 0.15;
+}
+
+.Timestamp {
+  flex-grow: 0.35;
+  text-align: end;
+}
+
+.transaction_category {
+  display: flex;
+  padding-top: 5px;
+  color: gray;
+  font-size: 0.9vw;
+}
+
+.Hash,
+.From,
+.To {
+  flex-grow: 0.25;
+}
+
+.Timestamp2 {
+  flex-grow: 0.15;
+  text-align: end;
+}
+#root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div.dropdown {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+#root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div.dropdown > button#dropdown-basic-button {
+  font-size: 0.9rem !important;
+  padding-bottom: 3px;
+  color: gray;
+  font-weight: 400;
+}
+
+#root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div > div.dropdown-menu.show {
+  min-width: 4.5rem;
+}
+
+#root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div > div > a {
+  padding: 0.2rem 0.4rem;
+  color: gray;
+  font-weight: 400;
+}
+
+@-webkit-keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner-border {
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  vertical-align: -0.125em;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: 0.75s linear infinite spinner-border;
+  animation: 0.75s linear infinite spinner-border;
+  margin-top: 35px;
+  color: royalblue;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
+
+@-webkit-keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.spinner-grow {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.125em;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-animation: 0.75s linear infinite spinner-grow;
+  animation: 0.75s linear infinite spinner-grow;
+}
+
+.spinner-grow-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-border,
+  .spinner-grow {
+    -webkit-animation-duration: 1.5s;
+    animation-duration: 1.5s;
+  }
+}
+
+.lastBlock_spinner.spinner-border.text-primary {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: royalblue;
+  margin-top: 9px;
+  position: absolute;
+  top: 40%;
+  left: 47%;
+}
+
+.refresh_box {
+  display: flex;
+  margin: 15px auto 0 auto;
+  width: 200px;
+  border: 1.5px solid gray;
+  justify-content: center;
+  border-radius: 7px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
+  }
+}
+
+.material-icons.refresh_logo {
+  margin-right: 2px;
 }

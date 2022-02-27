@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const BlocksSchema = new mongoose.Schema(
+const Block_01Schema = new mongoose.Schema(
   {
     number: { type: Number },
     viewID: { type: Number },
     epoch: { type: Number },
-    shard: { type: Number, default: 0 },
+    shardID: { type: Number, default: 0 },
     hash: { type: String, default: false },
     parentHash: { type: String },
     nonce: { type: Number, default: 0 },
@@ -18,18 +18,17 @@ const BlocksSchema = new mongoose.Schema(
     size: { type: Number },
     gasLimit: { type: Number },
     gasUsed: { type: Number },
-    timeStamp: { type: Number },
-    transactionsToor: { type: String },
+    timestamp: { type: Number },
+    transactionsRoot: { type: String },
     receiptsRoot: { type: String },
     uncles: [],
     transactions: [],
-    stakingTransactions: [],
   },
   {
-    collection: "Blocks",
+    collection: "Block_01",
     versionKey: false, //here
   }
 );
 
-const Blocks = mongoose.model("Blocks", BlocksSchema);
-module.exports = Blocks;
+const Block_01 = mongoose.model("Block_01", Block_01Schema);
+module.exports = Block_01;

@@ -7,11 +7,12 @@ function Nav() {
       <div className="NavBarInisde">
         <div className="NavBarInisdeContainer">
           <Link to="/" className="homeNav">
-            Harmony
+            <img className="NMM_logo" src={`https://cdn.discordapp.com/attachments/945264538171871275/946778661581914212/n128.png`} />
+            NMM-Harmony
           </Link>
-          <Link to="/dnw" className="nav" id="DepositWithdraw">
+          {/* <Link to="/dnw" className="nav" id="DepositWithdraw">
             Deposit & Withdraw History
-          </Link>
+          </Link> */}
           <DropdownButton className="nav" id="dropdown-basic-button" title="Tokens">
             <Dropdown.Item>
               <Link to="/" className="noneDeco">
