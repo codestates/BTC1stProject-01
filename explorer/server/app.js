@@ -13,7 +13,7 @@ mongoose
   .connect(`mongodb+srv://NMM:${env.DB_PASSWORD}@cluster0.qzh54.mongodb.net/harmony-testnet?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
+  }) //몽고디비접속
   .then(() => {
     app.listen(app.get("port"), () => {
       console.log(`app is listening in http://localhost:${app.get("port")}`);

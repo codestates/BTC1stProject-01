@@ -25,7 +25,6 @@ function FrontPage() {
     //라스트 트랜잭션 리프레시
     setlastTransactions_Loading(true);
     await axios.get("http://localhost:3001/calltransaction").then((result) => {
-      console.log("???", result);
       setLastTransactions(result.data.data);
       setlastTransactions_Loading(false);
     });
@@ -46,7 +45,6 @@ function FrontPage() {
       //라스트 트랜잭션 조회
       setlastTransactions_Loading(true);
       await axios.get("http://localhost:3001/calltransaction").then((result) => {
-        console.log("???", result);
         setLastTransactions(result.data.data);
         setlastTransactions_Loading(false);
       });
@@ -56,18 +54,11 @@ function FrontPage() {
       // 실시간 리프레시
       load_LastBlock();
       load_LastTransaction();
-    }, 8000);
+    }, 9000); //9초마다 자동 리프레시 한다.
     return () => {
       clearInterval(timer);
     };
   }, []);
-
-  async function test() {
-    await axios.get("http://localhost:3001/calltransaction").then((result) => {
-      setLastTransactions(result.data.data);
-      //     setlastBlocks_Loading(false);
-    });
-  }
 
   function changeShard(e) {
     // 콤보박스에서 누르는 샤드 번호에 따라 선택 중인 샤드를 state로 관리
@@ -112,15 +103,17 @@ function FrontPage() {
 
   const click_SearchIcon = () => {
     //검색창에 검색아이콘을 누를 시 검색이 작동된다.
+
     if (now_input !== "") {
       if (now_input.slice(0, 3) === "one" && now_input.length === 42) {
+        //계좌 검색
         document.location.href = `/dnw/${now_input}`;
-      } else if (isNaN(Number(now_input) === false && now_input.slice(0, 2) !== "0x")) {
-        console.log("블록검색?");
+      } else if (isNaN(Number(now_input)) === false && now_input.slice(0, 2) !== "0x") {
+        document.location.href = `/block/${now_input}`;
+        //블록 검색
       } else if (now_input.slice(0, 2) === "0x" && now_input.length === 66) {
-        console.log("트랜잭션 검색");
-      } else {
-        setNow_input("");
+        //트랜잭션 검색
+        document.location.href = `/transaction/${now_input}`;
       }
     } else {
       document.location.href = "/";
@@ -137,7 +130,7 @@ function FrontPage() {
         </div>
         <input
           className="searchBlock"
-          placeholder="Search by Address / Transaction Hash / Block / Token"
+          placeholder="Search by Address / Transaction Hash / Block"
           onChange={(e) => nowInput(e)}
           onKeyPress={handleKeyPress}
         />
@@ -145,7 +138,7 @@ function FrontPage() {
       <div className="main_set">
         <div className="Last_Blocks">
           <div className="title_block">
-            Last Blocks
+            🧱 Last Blocks
             <DropdownButton id="dropdown-basic-button" title={shard}>
               <Dropdown.Item onClick={(e) => changeShard(e)}>Shard 0</Dropdown.Item>
               <Dropdown.Item onClick={(e) => changeShard(e)}>Shard 1</Dropdown.Item>
@@ -153,7 +146,6 @@ function FrontPage() {
               <Dropdown.Item onClick={(e) => changeShard(e)}>Shard 3</Dropdown.Item>
             </DropdownButton>
           </div>
-
           {lastBlocks_Loading ? (
             <Spinner animation="border" variant="primary" className="lastBlock_spinner" />
           ) : (
@@ -202,36 +194,44 @@ function FrontPage() {
                 {now_shard === 0
                   ? lastBlocks[0].map((block, index) => {
                       return (
-                        <div key={index} className="Height_set">
-                          {block.height}
-                        </div>
+                        <Link to={`/block/${block.height}`}>
+                          <div key={index} className="Height_set">
+                            {block.height}
+                          </div>
+                        </Link>
                       );
                     })
                   : null}
                 {now_shard === 1
                   ? lastBlocks[1].map((block, index) => {
                       return (
-                        <div key={index} className="Height_set">
-                          {block.height}
-                        </div>
+                        <Link to={`/block/${block.height}`}>
+                          <div key={index} className="Height_set">
+                            {block.height}
+                          </div>
+                        </Link>
                       );
                     })
                   : null}
                 {now_shard === 2
                   ? lastBlocks[2].map((block, index) => {
                       return (
-                        <div key={index} className="Height_set">
-                          {block.height}
-                        </div>
+                        <Link to={`/block/${block.height}`}>
+                          <div key={index} className="Height_set">
+                            {block.height}
+                          </div>
+                        </Link>
                       );
                     })
                   : null}
                 {now_shard === 3
                   ? lastBlocks[3].map((block, index) => {
                       return (
-                        <div key={index} className="Height_set">
-                          {block.height}
-                        </div>
+                        <Link to={`/block/${block.height}`}>
+                          <div key={index} className="Height_set">
+                            {block.height}
+                          </div>
+                        </Link>
                       );
                     })
                   : null}
@@ -324,7 +324,7 @@ function FrontPage() {
           {/* {라스트 트랜잭션 리턴} */}
         </div>
         <div className="Last_Transactions">
-          <div className="title">Last Transactions</div>
+          <div className="title">🔐 Last Transactions</div>
 
           {lastTransactions_Loading ? (
             <Spinner animation="border" variant="primary" className="lastBlock_spinner" />
@@ -344,10 +344,11 @@ function FrontPage() {
                 Hash
                 {lastTransactions.map((block, index) => {
                   return (
-                    <div key={index} className="Common_set">
-                      {/* {block.hash} */}
-                      {block.hash.slice(0, 4) + "..." + block.hash.slice(-4)}
-                    </div>
+                    <Link to={`/transaction/${block.hash}`} className="noneDeco">
+                      <div key={index} className="Common_set">
+                        {block.hash.slice(0, 4) + "..." + block.hash.slice(-4)}
+                      </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -355,9 +356,11 @@ function FrontPage() {
                 From
                 {lastTransactions.map((block, index) => {
                   return (
-                    <div key={index} className="Common_set">
-                      {block.from.slice(0, 4) + "..." + block.from.slice(-4)}
-                    </div>
+                    <Link to={`/dnw/${block.from}`} className="noneDeco">
+                      <div key={index} className="Common_set">
+                        {block.from.slice(0, 4) + "..." + block.from.slice(-4)}
+                      </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -365,9 +368,11 @@ function FrontPage() {
                 To
                 {lastTransactions.map((block, index) => {
                   return (
-                    <div key={index} className="Common_set">
-                      {block.to.slice(0, 4) + "..." + block.to.slice(-4)}
-                    </div>
+                    <Link to={`/dnw/${block.to}`} className="noneDeco">
+                      <div key={index} className="Common_set">
+                        {block.to.slice(0, 4) + "..." + block.to.slice(-4)}
+                      </div>
+                    </Link>
                   );
                 })}
               </div>

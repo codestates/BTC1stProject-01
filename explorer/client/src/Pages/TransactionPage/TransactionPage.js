@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./TransactionPage.scss";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -9,13 +10,9 @@ function TransactionPage() {
   const [timestamp, setTimestamp] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log("????", data);
   useEffect(() => {
     const URLparam = document.location.href.split("transaction/")[1];
     setTx(URLparam);
-  }, []);
-
-  useEffect(() => {
     setLoading(true);
 
     async function call() {
@@ -26,7 +23,7 @@ function TransactionPage() {
 
       await axios
         .post(
-          "https://rpc.s0.b.hmny.io",
+          "https://rpc.s0.b.hmny.io", //특정 트랜잭션을 조회 요청을 날린다.
           {
             jsonrpc: "2.0",
             id: 1,
@@ -36,8 +33,8 @@ function TransactionPage() {
           headers
         )
         .then((result) => {
-          setData(result.data.result);
-          if (result.length !== 0) {
+          if (result.data.result !== undefined && result.data.result !== null) {
+            setData(result.data.result);
             let date = new Date(result.data.result.timestamp * 1000);
             setTimestamp(
               date.getDate() +
@@ -63,95 +60,87 @@ function TransactionPage() {
     <div className="main3">
       <div className="main_middle_set">
         <div className="main_box_name set_flex">
-          <div className="info_title">Block Info</div>
+          <div className="info_title">🖇️ Transaction Info</div>
         </div>
         <div className="main_box1">
-          <div className="box_flex wrap">
-            <div className="title2 addwitdh">Shard ID</div>
-            <div>{data !== undefined ? data.shardID + "→" + data.toShardID : null}</div>
-          </div>
-          <div className="box_flex wrap">
-            <div className="title2 addwitdh">Hash</div>
-            <div className="pointer">{data.length !== 0 ? data.hash : null}</div>
-          </div>
           {loading ? (
             <Spinner animation="border" variant="primary" className="lastBlock_spinner" />
           ) : (
             <div>
               {" "}
               <div className="box_flex wrap">
+                <div className="title2 addwitdh">Shard ID</div>
+                <div>{data !== undefined && data !== null && data !== null ? data.shardID + "➡" + data.toShardID : null}</div>
+              </div>
+              <div className="box_flex wrap">
                 <div className="title2 addwitdh">Hash</div>
-                <div className="pointer">{data.length !== 0 ? data.from : null}</div>
+                <div className="upColor">{data !== undefined && data !== null ? data.hash : null}</div>
+              </div>
+              <div className="box_flex wrap">
+                <div className="title2 addwitdh">Ethereum Hash</div>
+                <div className="upColor">{data !== undefined && data !== null ? data.ethHash : null}</div>
+              </div>
+              <div className="box_flex wrap">
+                <div className="title2 addwitdh">Block Number</div>
+                <Link to={`/block/${data.blockNumber}`}>
+                  <div className="pointer">{data !== undefined && data !== null ? data.blockNumber : null}</div>
+                </Link>
               </div>
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Timestamp</div>
-                <div>{data.length !== 0 ? timestamp : null}</div>
+                <div>{data !== undefined && data !== null ? timestamp : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Gas Limit</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">From</div>
+                <Link to={`/dnw/${data.from}`}>
+                  <div className="pointer">{data !== undefined && data !== null ? data.from : null}</div>
+                </Link>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Gas Used</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">To</div>
+                <Link to={`/dnw/${data.to}`}>
+                  <div className="pointer">{data !== undefined && data !== null ? data.to : null}</div>
+                </Link>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Size</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">value</div>
+                <div>{data !== undefined && data !== null ? data.value / 1e18 + " ONE" : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Extra Data</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">Token Transfers</div>
+                <div></div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Difficulty</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">Gas</div>
+                <div>{data !== undefined && data !== null ? data.gas : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Logs Bloom</div>
-                <div>
-                  <span>ready</span>
-                </div>
-              </div>
-              <div className="box_flex wrap">
-                <div className="title2 addwitdh">Mix Hash</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">Gas Price</div>
+                <div>{data !== undefined && data !== null ? data.gasPrice : null}</div>
               </div>
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Nonce</div>
-                <div>ready</div>
+                <div>{data !== undefined && data !== null ? data.nonce : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Parent Hash</div>
-                <div className="pointer">ready</div>
+                <div className="title2 addwitdh">Transaction Index</div>
+                <div>{data !== undefined && data !== null ? data.transactionIndex : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Receipts Root</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">Input</div>
+                <div>{data !== undefined && data !== null ? String(data.input).slice(0, 66) + "..." : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Transactions</div>
-                <div className="pointer">ready</div>
+                <div className="title2 addwitdh">r</div>
+                <div>{data !== undefined && data !== null ? data.r : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">State Root</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">s</div>
+                <div>{data !== undefined && data !== null ? data.s : null}</div>
               </div>
               <div className="box_flex wrap">
-                <div className="title2 addwitdh">Transactions Root</div>
-                <div>ready</div>
-              </div>
-              <div className="box_flex wrap">
-                <div className="title2 addwitdh">Uncles</div>
-                <div>ready</div>
-              </div>
-              <div className="box_flex wrap">
-                <div className="title2 addwitdh">Epoch</div>
-                <div>ready</div>
-              </div>
-              <div className="box_flex wrap">
-                <div className="title2 addwitdh">View ID</div>
-                <div>ready</div>
+                <div className="title2 addwitdh">v</div>
+                <div>{data !== undefined && data !== null ? data.v : null}</div>
               </div>
             </div>
           )}

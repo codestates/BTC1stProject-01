@@ -38,11 +38,11 @@
   padding-bottom: 24px;
   font-family: Nunito;
   color: rgb(85, 98, 109);
-  border-bottom: 2px solid #2081e2a8;
+  border-bottom: 3px solid #2081e2a8;
 }
 
 .main_box1 {
-  border: 2px solid #2081e2a8;
+  border: 3px solid #2081e2a8;
   padding: 0 15px 10px 15px;
   margin-bottom: 20px;
   border-radius: 7px;
@@ -58,6 +58,7 @@
 .title2 {
   color: gray;
   margin-right: 11rem;
+  font-weight: bold;
 }
 
 .main_box2 {
@@ -89,6 +90,10 @@
   border-bottom: 1px solid black;
 }
 
+.addColor {
+  color: black;
+}
+
 .type_set {
   padding: 15px 0;
   border-bottom: 1px solid black;
@@ -108,4 +113,16 @@
 
 .dnw_Timestamp {
   text-align: end;
+}
+
+#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(2) > div.dropdown > button {
+  color: #55626d;
+}
+
+#root > div.main2 > div > div.main_box_name.set_flex > div:nth-child(2) > div > div {
+  min-width: 6rem;
+  & > a {
+    width: 67.2%;
+    color: #55626d;
+  }
 }

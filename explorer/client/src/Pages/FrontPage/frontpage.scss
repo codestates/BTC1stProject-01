@@ -13,6 +13,7 @@
     bottom: -18px;
   }
 }
+
 .searchBar {
   width: 58%;
   height: 10%;
@@ -46,6 +47,7 @@
   background-color: #d7f7f6;
   border-radius: 7px;
 }
+
 .searchBlock:focus,
 .searchBlock:hover {
   outline: none;
@@ -66,6 +68,7 @@
   position: relative;
   border-radius: 7px;
 }
+
 .Last_Transactions {
   border: 2px solid #2081e2a8;
   min-width: 27%;
@@ -111,6 +114,15 @@
   padding-bottom: 20px;
   padding-top: 15px;
   font-size: 15px;
+  color: black;
+}
+
+.Timestamp_set {
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  font-size: 15px;
+  color: gray;
 }
 
 .Height {
@@ -159,6 +171,7 @@
   flex-grow: 0.15;
   text-align: end;
 }
+
 #root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div.dropdown {
   position: absolute;
   right: 0;
@@ -166,6 +179,7 @@
   border: 1px solid;
   border-radius: 5px;
 }
+
 #root > div:nth-child(2) > div.main_set > div.Last_Blocks > div.title_block > div.dropdown > button#dropdown-basic-button {
   font-size: 0.9rem !important;
   padding-bottom: 3px;
@@ -194,6 +208,7 @@
     transform: rotate(360deg);
   }
 }
+
 .spinner-border {
   display: inline-block;
   width: 2.5rem;
@@ -233,6 +248,7 @@
     transform: none;
   }
 }
+
 .spinner-grow {
   display: inline-block;
   width: 2rem;
@@ -272,7 +288,7 @@
   display: flex;
   margin: 15px auto 0 auto;
   width: 200px;
-  border: 1.5px solid gray;
+  border: 2px solid gray;
   justify-content: center;
   border-radius: 7px;
   cursor: pointer;
@@ -283,4 +299,8 @@
 
 .material-icons.refresh_logo {
   margin-right: 2px;
+}
+
+.noneDeco {
+  text-decoration: none;
 }

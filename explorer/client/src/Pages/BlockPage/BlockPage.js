@@ -10,9 +10,6 @@ function Dnwpage() {
   const [now_shard, setNow_shard] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  console.log(now_shard);
-  console.log("????", block);
-
   useEffect(() => {
     const URLparam = document.location.href.split("block/")[1];
     setNumber(URLparam);
@@ -27,7 +24,7 @@ function Dnwpage() {
 
       await axios
         .post(
-          "https://rpc.s0.b.hmny.io",
+          "https://rpc.s0.b.hmny.io", //프론트에서 하모니테스트서버로 블록넘버조회를 하는 요청을 날린다. 샤드0부터 검색
           {
             jsonrpc: "2.0",
             id: 32,
@@ -44,11 +41,11 @@ function Dnwpage() {
           headers
         )
         .then((result) => {
-          shard_type_blocks[0].push(result.data.result);
+          shard_type_blocks[0].push(result.data.result); //임시변수에 적재
         });
       await axios
         .post(
-          "https://rpc.s1.b.hmny.io",
+          "https://rpc.s1.b.hmny.io", //샤드1 검색 요청
           {
             jsonrpc: "2.0",
             id: 32,
@@ -69,7 +66,7 @@ function Dnwpage() {
         });
       await axios
         .post(
-          "https://rpc.s2.b.hmny.io",
+          "https://rpc.s2.b.hmny.io", //샤드2 검색 요청
           {
             jsonrpc: "2.0",
             id: 32,
@@ -90,7 +87,7 @@ function Dnwpage() {
         });
       await axios
         .post(
-          "https://rpc.s3.b.hmny.io",
+          "https://rpc.s3.b.hmny.io", //샤드3 검색 요청
           {
             jsonrpc: "2.0",
             id: 32,
@@ -109,7 +106,7 @@ function Dnwpage() {
         .then((result) => {
           shard_type_blocks[3].push(result.data.result);
         });
-      setBlock(shard_type_blocks);
+      setBlock(shard_type_blocks); //현재 총 불러온 데이터를 state로 저장
       setLoading(false);
     }
 
@@ -138,7 +135,7 @@ function Dnwpage() {
     <div className="main3">
       <div className="main_middle_set">
         <div className="main_box_name set_flex">
-          <div className="info_title">Block Info</div>
+          <div className="info_title">⛓️ Block #{number}</div>
           <div>
             {" "}
             <DropdownButton id="dropdown-basic-button" title={shard}>
@@ -152,10 +149,10 @@ function Dnwpage() {
         <div className="main_box1">
           <div className="box_flex wrap">
             <div className="title2 addwitdh">Height</div>
-            <div className="pointer">{number}</div>
+            <div className="upColor">{number}</div>
           </div>
           <div className="box_flex wrap">
-            <div className="title2 addwitdh">Shard</div>
+            <div className="title2 addwitdh"> Shard</div>
             <div>{now_shard}</div>
           </div>
           {loading ? (
@@ -165,7 +162,7 @@ function Dnwpage() {
               {" "}
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Hash</div>
-                <div className="pointer">
+                <div className="upColor">
                   {now_shard === 0 && block.length !== 0
                     ? block[0].map((el) => {
                         return el.hash;
@@ -292,32 +289,6 @@ function Dnwpage() {
                     : null}
                 </div>
               </div>
-              {/* <div className="box_flex wrap">
-            <div className="title2 addwitdh">Proposer</div>
-            <div>
-              {" "}
-              {now_shard === 0 && block.length !== 0
-                ? block[0].map((el) => {
-                    return el.hash;
-                  })
-                : null}
-              {now_shard === 1 && block.length !== 0
-                ? block[1].map((el) => {
-                    return el.hash;
-                  })
-                : null}
-              {now_shard === 2 && block.length !== 0
-                ? block[2].map((el) => {
-                    return el.hash;
-                  })
-                : null}
-              {now_shard === 3 && block.length !== 0
-                ? block[3].map((el) => {
-                    return el.hash;
-                  })
-                : null}
-            </div>
-          </div> */}
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Gas Limit</div>
                 <div>
@@ -530,7 +501,7 @@ function Dnwpage() {
               </div>
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Parent Hash</div>
-                <div className="pointer">
+                <div className="upColor">
                   {" "}
                   {now_shard === 0 && block.length !== 0
                     ? block[0].map((el) => {
@@ -582,7 +553,7 @@ function Dnwpage() {
               </div>
               <div className="box_flex wrap">
                 <div className="title2 addwitdh">Transactions</div>
-                <div className="pointer">
+                <div className="upColor">
                   {" "}
                   {now_shard === 0 && block.length !== 0
                     ? block[0].map((el) => {
