@@ -101,7 +101,7 @@ function Dnwpage() {
         .post(
           "http://localhost:3001/search/loaddnw", // 해당 계정의 입출금 내역을 요청한다.
           {
-            address: address,
+            address: document.location.href.split("dnw/")[1],
           },
           headers
         )

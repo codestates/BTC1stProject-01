@@ -13,7 +13,7 @@ function Nav() {
         <div className="NavBarInisdeContainer">
           <Link to="/" className="homeNav">
             <img className="NMM_logo" src={`https://cdn.discordapp.com/attachments/945264538171871275/946778661581914212/n128.png`} />
-            NMM-Harmony
+            NMM ✖ Harmony
           </Link>
           <DropdownButton className="nav" id="dropdown-basic-button" title="Tokens">
             <Dropdown.Item onClick={callAlert}>
