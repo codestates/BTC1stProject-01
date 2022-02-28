@@ -169,6 +169,28 @@ router.get('/balance', async (req, res, next) => {
     result.balance = fromWei(hexToNumber(balance.result), Units.one);
     console.log('밸런스 in ONEs: ' + result);
     
+    //https://api.coingecko.com/api/v3/simple/price?ids=harmony&vs_currencies=krw
+    let options = {
+        url: 'https://api.coingecko.com/api/v3/simple/price?ids=harmony&vs_currencies=krw',
+        method: "get",
+        headers: {"content-type": "application/json"},
+        // body: JSON.stringify({
+        //   "jsonrpc": "2.0",
+        //   "id": "1",
+        //   "method": "hmyv2_gasPrice",
+        //   "params": []
+        // })
+    };
+    request(options, (error, response, body) => {
+        if (error) {
+            console.error('An error has occurred: ', error);
+        } else {
+            console.log('Post successful: response: ', body);
+            result.krw = JSON.parse(body).harmony.krw;
+            result.krw = Math.round(Number(result.balance) * Number(result.krw));
+        }
+        res.json({ message: "ok", data: result });
+    });
 
     //가스 확인
     // let options = {
@@ -197,7 +219,7 @@ router.get('/balance', async (req, res, next) => {
     // Post successful: response:  {"jsonrpc":"2.0","id":"1","result":30000000000}
 
 
-    res.json({ message: "ok", data: result });
+    //res.json({ message: "ok", data: result });
   } catch (err) {
     console.error(err);
   }

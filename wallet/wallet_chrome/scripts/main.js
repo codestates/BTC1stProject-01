@@ -161,7 +161,9 @@ const getAccountInfo = async (account) => {
         })
         .then(resultOfInit => {
           result = Number(resultOfInit.data.data.balance).toLocaleString('ko-KR') + " ONE";
+          resultKrw = Number(resultOfInit.data.data.krw).toLocaleString('ko-KR') + " 원";
           document.getElementById('mainBalance').innerText = result;
+          document.getElementById('mainKrw').innerText = resultKrw;
           document.getElementById('transfer-balance').innerText = `전송 가능 수량: ${result}`;
         
           //가스비 업데이트
