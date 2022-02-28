@@ -225,7 +225,7 @@ const getActivityInfo = async (account) => {
             div.addEventListener('click', function(){
               //alert('새창 띄워주야 된다 ' + this.name);
               //window.open(`https://explorer.pops.one/tx/${this.name}`);
-              window.open(`http://localhost:3001/transaction/${this.name}`);
+              window.open(`http://localhost:3000/transaction/${this.name}`);
             });
             
             //데이터 적재
