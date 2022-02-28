@@ -54,7 +54,7 @@ function FrontPage() {
       // 실시간 리프레시
       load_LastBlock();
       load_LastTransaction();
-    }, 9000); //9초마다 자동 리프레시 한다.
+    }, 5000); //9초마다 자동 리프레시 한다.
     return () => {
       clearInterval(timer);
     };
