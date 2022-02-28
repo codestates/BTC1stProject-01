@@ -139,8 +139,8 @@ function Dnwpage() {
       <div className="main_middle_set">
         <div className="main_box_name set_flex">
           <div className="info_title">👁️‍🗨️ Address</div>
+          <div>👨‍👨‍👦‍👦</div>
           <div>
-            {" "}
             <DropdownButton id="dropdown-basic-button" title={shard}>
               <Dropdown.Item onClick={(e) => changeShard(e)}>Shard 0</Dropdown.Item>
               <Dropdown.Item onClick={(e) => changeShard(e)}>Shard 1</Dropdown.Item>

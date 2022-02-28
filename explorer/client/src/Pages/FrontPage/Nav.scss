@@ -71,6 +71,10 @@ a {
   display: block;
 }
 
+#root > div.NavBar > div > div > div > div {
+  transform: translate(-83px, 70px) !important;
+}
+
 #dropdown-basic-button {
   border: none !important;
   background-color: rgba(255, 255, 255, 0);
