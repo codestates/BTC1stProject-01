@@ -1,4 +1,4 @@
-# NMM X Harmony : Harmony Wallet_BlockExplorer_Daemon
+# NMM X Harmony : Wallet-BlockExplorer-Daemon
 ![LOGO](https://cdn.discordapp.com/attachments/945643068755943447/951757432521109564/Untitled_2_1.png)
 
 ### 프로젝트 소개 
