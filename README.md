@@ -1,5 +1,5 @@
 # NMM X Harmony : Wallet-BlockExplorer-txDaemon
-![LOGO](https://cdn.discordapp.com/attachments/945643068755943447/951757432521109564/Untitled_2_1.png)
+![LOGO](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FWIc57%2FbtrvKJ0QDKp%2Fqdeliwt8gOlX0sdwsDDyK0%2Fimg.jpg)
 
 ### 프로젝트 소개 
 * Wiki : [Notion](https://bit.ly/3vYCvhh, "link")
